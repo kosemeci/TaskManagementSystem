@@ -2,13 +2,21 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TaskManagerApplication",
+            "request": "launch",
+            "mainClass": "com.myProject.task_manager.starter.TaskManagerApplication",
+            "projectName": "task-manager"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-TaskManagerApplication<task-manager>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "com.myProject.task_manager.TaskManagerApplication",
             "projectName": "task-manager",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=54100 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=task-manager"
         }
     ]
 }

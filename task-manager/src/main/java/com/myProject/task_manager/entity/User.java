@@ -1,5 +1,7 @@
 package com.myProject.task_manager.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +31,12 @@ public class User {
 
     @Column(name = "mail_adress",nullable = false,unique = true)
     private String mailAdress;
+
+    @Column(name = "tel_number",nullable = false,unique = true)
+    private String telNumber;
+
+    @Column(name="birth_of_date",nullable = false)
+    private LocalDate birthOfDate;
 
     @Column(name = "role",nullable = false)
     private String role;

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.myProject.task_manager.controller.ITaskController;
 import com.myProject.task_manager.entity.Task;
 import com.myProject.task_manager.services.ITaskService;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("/task-management-system")
@@ -31,5 +34,14 @@ public class TaskControllerImpl implements ITaskController{
     public List<Task> getTaskList() {
         return taskService.getTaskList();
     }
+
+    @PutMapping(path="/task-state-update/{id}")
+    @Override
+    public Task updateTask(@PathVariable (name = "id") int id, @RequestBody Task task) {
+        
+        return taskService.updateTask(id,task);
+    }
+
+
     
 }

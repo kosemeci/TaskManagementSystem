@@ -1,7 +1,7 @@
 package com.myProject.task_manager.services.impl;
 
 import java.util.List;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +25,22 @@ public class TaskServiceImpl implements ITaskService{
     public List<Task> getTaskList() {
         
         return taskRepository.findAll();
+    }
+
+    @Override
+    public Task updateTask(int id, Task task) {
+        
+        Optional<Task> optional = taskRepository.findById(id);
+        // Task newTask = new Task();
+        if(optional.isPresent()){
+            // BeanUtils.copyProperties(optional, newTask);
+            Task newTask = optional.get();
+            newTask.setStatus(task.getStatus());
+            newTask.setCompletionDate(task.getCompletionDate());
+            return taskRepository.save(newTask);
+        }
+        return null;
+        
     }
     
 }

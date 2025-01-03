@@ -3,6 +3,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myProject.task_manager.controller.IUserController;
+import com.myProject.task_manager.dto.DtoUser;
+import com.myProject.task_manager.dto.DtoUserIU;
 import com.myProject.task_manager.entity.User;
 import com.myProject.task_manager.services.IUserService;
 
@@ -26,8 +28,8 @@ public class UserControllerImpl implements IUserController {
 
     @PostMapping("/save")
     @Override
-    public User saveUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public DtoUser saveUser(@RequestBody DtoUserIU dtoUserIU) {
+        return userService.saveUser(dtoUserIU);
     }
 
     @GetMapping("/user-list")

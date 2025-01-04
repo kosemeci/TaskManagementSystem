@@ -22,13 +22,16 @@ public class Task {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "task_title",length = 30)
+    @Column(name = "task_title",length = 30,nullable = false)
     private String taskTitle;
 
-    @Column(name = "description",columnDefinition = "VARCHAR(255)")
+    @Column(name = "description",columnDefinition = "VARCHAR(255)",nullable = false)
     private String description;
 
-    @Column(name= "status")
+    @Column(name = "priority",nullable = false)
+    private String priority = "Medium";
+
+    @Column(name= "status",nullable = false)
     private String status="Pending";
     // PENDING: Görev oluşturuldu ancak henüz başlatılmadı.
     // IN_PROGRESS: Görev üzerinde çalışılıyor.
@@ -41,6 +44,9 @@ public class Task {
 
     @Column(name="completion_date",nullable = true)
     private LocalDate completionDate ;
+
+    @Column(name = "deadline",nullable = true)
+    private LocalDate deadline ;
 
 
 }

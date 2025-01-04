@@ -1,5 +1,6 @@
 package com.myProject.task_manager.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,13 +32,27 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public List<User> getUserList() {
-        return userRepository.findAll();
+    public List<DtoUser> getUserList() {
+        List<User> userList = userRepository.findAll();
+        List<DtoUser> dtoUserList = new ArrayList<>();
+        for (User user : userList) {
+            DtoUser dtoUser = new DtoUser();    
+            BeanUtils.copyProperties(user, dtoUser);
+            dtoUserList.add(dtoUser);
+        }
+        return dtoUserList;
     }
 
     @Override
-    public Optional<User> getUserById(int id){
-        return userRepository.findById(id);
+    public DtoUser getUserById(int id){
+        Optional<User> optional = userRepository.findById(id);
+        DtoUser dtoUser = new DtoUser();
+        if(optional.isPresent()){
+            User user = optional.get();
+            BeanUtils.copyProperties(user, dtoUser); 
+            return dtoUser;
+        }
+        return null;
     }
 
     

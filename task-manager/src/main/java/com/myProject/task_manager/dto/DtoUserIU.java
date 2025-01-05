@@ -20,7 +20,7 @@ public class DtoUserIU {
     private String firstName;
 
     @NotEmpty(message="Lastname field cannot be empty or null!")
-    @Size(min=2,max=30,message="Lastname field mus be min 2 digits!")
+    @Size(min=2,max=30,message="Lastname field must be min 2 digits!")
     private String lastName;
 
     @NotEmpty(message="Mail address field cannot be empty or null!")

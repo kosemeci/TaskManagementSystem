@@ -22,7 +22,7 @@ public class Task {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "task_title",length = 30,nullable = false)
+    @Column(name = "task_title",nullable = false)
     private String taskTitle;
 
     @Column(name = "description",columnDefinition = "VARCHAR(255)",nullable = false)

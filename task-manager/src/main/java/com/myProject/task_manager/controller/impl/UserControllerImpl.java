@@ -1,4 +1,11 @@
 package com.myProject.task_manager.controller.impl;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,13 +14,7 @@ import com.myProject.task_manager.dto.DtoUser;
 import com.myProject.task_manager.dto.DtoUserIU;
 import com.myProject.task_manager.services.IUserService;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import jakarta.validation.Valid;
 
 
 
@@ -26,7 +27,7 @@ public class UserControllerImpl implements IUserController {
 
     @PostMapping("/save")
     @Override
-    public DtoUser saveUser(@RequestBody DtoUserIU dtoUserIU) {
+    public DtoUser saveUser(@RequestBody @Valid DtoUserIU dtoUserIU) {
         return userService.saveUser(dtoUserIU);
     }
 
@@ -44,7 +45,5 @@ public class UserControllerImpl implements IUserController {
 
     // @RequestParam: Sorgulama ve filtreleme için.
     // @PathVariable: Kaynağa doğrudan erişim için.
-    
-    
-    
+       
 }

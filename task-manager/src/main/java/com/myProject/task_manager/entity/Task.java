@@ -19,7 +19,6 @@ public class Task {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
     @Column(name = "task_title",nullable = false)
@@ -47,6 +46,8 @@ public class Task {
 
     @Column(name = "deadline",nullable = true)
     private LocalDate deadline ;
+
+    
 
 
 }

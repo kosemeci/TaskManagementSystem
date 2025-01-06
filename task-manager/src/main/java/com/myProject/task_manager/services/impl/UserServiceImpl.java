@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 import com.myProject.task_manager.dto.DtoUser;
 import com.myProject.task_manager.dto.DtoUserIU;
 import com.myProject.task_manager.entity.User;
-import com.myProject.task_manager.repository.IUserRepository;
+import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.services.IUserService;
 
 @Service
 public class UserServiceImpl implements IUserService{
 
     @Autowired
-    private IUserRepository userRepository;
+    private UserRepository userRepository;
     
     @Override
     public DtoUser saveUser(DtoUserIU dtoUserIU) {
@@ -50,6 +50,18 @@ public class UserServiceImpl implements IUserService{
         if(optional.isPresent()){
             User user = optional.get();
             BeanUtils.copyProperties(user, dtoUser); 
+            return dtoUser;
+        }
+        return null;
+    }
+
+    @Override
+    public DtoUser allTaskOfUserById(int id) {
+        Optional<User> optional = userRepository.findById(id);
+        DtoUser dtoUser = new DtoUser();
+        if(optional.isPresent()){
+            User user = optional.get();
+            BeanUtils.copyProperties(user, dtoUser);
             return dtoUser;
         }
         return null;

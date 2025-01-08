@@ -14,5 +14,4 @@ public interface IUserController {
 
      public DtoUser getUserById(int id);
 
-     public DtoUser allTaskOfUserById(int id);
 }

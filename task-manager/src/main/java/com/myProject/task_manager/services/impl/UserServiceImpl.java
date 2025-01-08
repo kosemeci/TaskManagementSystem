@@ -55,17 +55,5 @@ public class UserServiceImpl implements IUserService{
         return null;
     }
 
-    @Override
-    public DtoUser allTaskOfUserById(int id) {
-        Optional<User> optional = userRepository.findById(id);
-        DtoUser dtoUser = new DtoUser();
-        if(optional.isPresent()){
-            User user = optional.get();
-            BeanUtils.copyProperties(user, dtoUser);
-            return dtoUser;
-        }
-        return null;
-    }
-
     
 }

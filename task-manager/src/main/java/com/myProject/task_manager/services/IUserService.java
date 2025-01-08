@@ -13,5 +13,4 @@ public interface IUserService {
 
     public DtoUser getUserById(int id);
 
-    public DtoUser allTaskOfUserById(int id);
 }

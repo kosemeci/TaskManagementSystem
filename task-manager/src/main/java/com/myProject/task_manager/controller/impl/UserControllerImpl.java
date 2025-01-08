@@ -43,11 +43,6 @@ public class UserControllerImpl implements IUserController {
         return userService.getUserById(id);
     }
 
-    @GetMapping("/tasks/user/{id}")
-    @Override
-    public DtoUser allTaskOfUserById(@PathVariable int id) {
-        return userService.allTaskOfUserById(id);
-    }
 
     // @RequestParam: Sorgulama ve filtreleme için.
     // @PathVariable: Kaynağa doğrudan erişim için.

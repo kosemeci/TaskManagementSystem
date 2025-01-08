@@ -3,6 +3,8 @@ package com.myProject.task_manager.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,7 +45,8 @@ public class User {
     @Column(name = "role",nullable = false)
     private String role;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Task> task;
 
 }

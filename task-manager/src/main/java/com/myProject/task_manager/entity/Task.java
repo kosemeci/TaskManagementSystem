@@ -2,11 +2,14 @@ package com.myProject.task_manager.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,7 +50,8 @@ public class Task {
     @Column(name = "deadline",nullable = true)
     private LocalDate deadline ;
 
-    
-
+    @ManyToOne
+    @JsonBackReference
+    private User user;
 
 }

@@ -3,6 +3,8 @@ package com.myProject.task_manager.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.myProject.task_manager.entity.Task;
 
 import lombok.AllArgsConstructor;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(value=Include.NON_NULL)
 public class DtoUser {
 
     private int id;

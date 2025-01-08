@@ -74,11 +74,14 @@ public class TaskServiceImpl implements ITaskService{
             Task task = optional.get();
             DtoUser dtoUser = new DtoUser();
             BeanUtils.copyProperties(task, dtoTask);
-            dtoUser.setId(task.getUser().getId());
-            dtoUser.setFirstName(task.getUser().getFirstName());
-            dtoUser.setLastName(task.getUser().getLastName());
-            dtoUser.setMailAdress(task.getUser().getMailAdress());
-            dtoTask.setUser(dtoUser);
+            if(task.getUser()!=null){
+                dtoUser.setId(task.getUser().getId());
+                dtoUser.setFirstName(task.getUser().getFirstName());
+                dtoUser.setLastName(task.getUser().getLastName());
+                dtoUser.setMailAdress(task.getUser().getMailAdress());
+                dtoTask.setUser(dtoUser);
+            }
+            
             return dtoTask; 
         }
         return null;

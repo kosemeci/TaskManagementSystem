@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.myProject.task_manager.entity.Task;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +21,6 @@ public class DtoUser {
     private String lastName;
     private String mailAdress;
     private String role;
-    private List<Task> task;
+    private List<DtoTask> task;//BURADA KALDIN BURAYI DTO TASK YAP! YAPMASANDA OLUR AMA YAPSAN DAHA GÜZEL OLUCAK
 
 }

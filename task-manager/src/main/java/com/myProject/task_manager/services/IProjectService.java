@@ -1,8 +1,8 @@
 package com.myProject.task_manager.services;
 
-import com.myProject.task_manager.entity.Project;
+import com.myProject.task_manager.dto.DtoProject;
 
 public interface IProjectService {
     
-    public Project findTaskById(int id);
+    public DtoProject findProjectById(int id);
 }

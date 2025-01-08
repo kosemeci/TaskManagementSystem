@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.myProject.task_manager.dto.DtoProject;
 import com.myProject.task_manager.dto.DtoTask;
 import com.myProject.task_manager.dto.DtoUser;
 import com.myProject.task_manager.entity.Task;
@@ -26,7 +27,7 @@ public class TaskServiceImpl implements ITaskService{
     }
 
     @Override
-    public List<DtoTask> getTaskList() {
+    public List<DtoTask> getTaskList() { //burada kaldın buraya projeleri de ekle.
 
         List <Task> dbTask = taskRepository.findAll();
         List <DtoTask> responseDtoTask = new ArrayList<>(); 
@@ -41,14 +42,11 @@ public class TaskServiceImpl implements ITaskService{
                 dtoUser.setLastName(task.getUser().getLastName());
                 dtoUser.setMailAdress(task.getUser().getMailAdress());
                 dtoTask.setUser(dtoUser);
-                
             }
             responseDtoTask.add(dtoTask);
-
         }
         return responseDtoTask;
     }
-
 
     @Override
     public Task updateTask(int id, Task task) {
@@ -81,10 +79,15 @@ public class TaskServiceImpl implements ITaskService{
                 dtoUser.setMailAdress(task.getUser().getMailAdress());
                 dtoTask.setUser(dtoUser);
             }
-            
+            if(task.getProject()!=null){
+                DtoProject dtoProject = new DtoProject();
+                dtoProject.setId(task.getProject().getId());
+                dtoProject.setProjectName(task.getProject().getProjectName());
+                dtoProject.setDescription(task.getProject().getDescription());
+                dtoTask.setProject(dtoProject);
+            }
             return dtoTask; 
         }
         return null;
     }
-    
 }

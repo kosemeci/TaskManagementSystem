@@ -54,4 +54,7 @@ public class Task {
     @JsonBackReference
     private User user;
 
+    @ManyToOne
+    private Project project;
+
 }

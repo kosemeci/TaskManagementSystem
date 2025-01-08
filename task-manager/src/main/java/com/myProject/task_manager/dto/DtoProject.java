@@ -1,6 +1,5 @@
 package com.myProject.task_manager.dto;
 
-
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,13 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(value=Include.NON_NULL)
-public class DtoUser {
-
+public class DtoProject {
+    
     private int id;
-    private String firstName;
-    private String lastName;
-    private String mailAdress;
-    private String role;
+    private String projectName;
+    private String description;
     private List<DtoTask> task;
-
+    
 }

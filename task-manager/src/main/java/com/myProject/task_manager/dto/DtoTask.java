@@ -25,4 +25,6 @@ public class DtoTask {
     private LocalDate completionDate ;
     private LocalDate deadline ;
     private DtoUser user;
+    private DtoProject project;
+
 }

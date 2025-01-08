@@ -30,7 +30,7 @@ public class Project {
     @Column(name="description")
     private String description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "project")
     private List<Task> task;
 
 }

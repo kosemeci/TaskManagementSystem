@@ -39,7 +39,7 @@ public class UserControllerImpl implements IUserController {
 
     @GetMapping("/user/{id}")
     @Override
-    public DtoUser getUserById(@PathVariable int id) {
+    public DtoUser getUserById(@PathVariable Integer id) {
         return userService.getUserById(id);
     }
 

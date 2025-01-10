@@ -13,6 +13,9 @@ import com.myProject.task_manager.dto.DtoUser;
 import com.myProject.task_manager.dto.DtoUserIU;
 import com.myProject.task_manager.entity.Task;
 import com.myProject.task_manager.entity.User;
+import com.myProject.task_manager.exception.BaseException;
+import com.myProject.task_manager.exception.ErrorMessage;
+import com.myProject.task_manager.exception.MessageType;
 import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.services.IUserService;
 
@@ -60,7 +63,7 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public DtoUser getUserById(int id){
+    public DtoUser getUserById(Integer id){
         Optional<User> optional = userRepository.findById(id);
         DtoUser dtoUser = new DtoUser();
         List <DtoTask> dtoTaskList = new ArrayList<>();
@@ -84,7 +87,7 @@ public class UserServiceImpl implements IUserService{
             }
             return dtoUser;
         }
-        return null;
+        throw new BaseException(new ErrorMessage(MessageType.NOT_EXIST_RECORD, id.toString()));
     }
 
     

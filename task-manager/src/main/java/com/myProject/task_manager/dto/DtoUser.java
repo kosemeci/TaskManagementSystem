@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(value=Include.NON_NULL)
 public class DtoUser {
 
-    private int id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String mailAdress;

@@ -10,8 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.myProject.task_manager.dto.DtoProject;
 import com.myProject.task_manager.dto.DtoTask;
+import com.myProject.task_manager.dto.DtoUser;
 import com.myProject.task_manager.entity.Project;
 import com.myProject.task_manager.entity.Task;
+import com.myProject.task_manager.exception.BaseException;
+import com.myProject.task_manager.exception.ErrorMessage;
+import com.myProject.task_manager.exception.MessageType;
 import com.myProject.task_manager.repository.ProjectRepository;
 import com.myProject.task_manager.services.IProjectService;
 
@@ -22,18 +26,19 @@ public class ProjectServiceImpl implements IProjectService{
     private ProjectRepository projectRepository;
     
     @Override //validasyon işlemleri task ve project için 
-    public DtoProject findProjectById(int id) { //buraya taskler içinde user bilgileri de gelmeli , task i user a atama işlemi, taski projeye atma işi 
+    public DtoProject findProjectById(Integer id) { 
         Optional <Project> optional = projectRepository.findById(id);
         if(optional.isEmpty()){
-            return null;
+            throw new BaseException(new ErrorMessage(MessageType.NOT_EXIST_PROJECT_RECORD,id.toString()));
         }
-        Project response = optional.get();
+        Project dbProject = optional.get();
         DtoProject dtoProject = new DtoProject();
-        BeanUtils.copyProperties(response, dtoProject);
-        if(response.getTask()!=null){
+        BeanUtils.copyProperties(dbProject, dtoProject);
+        if(dbProject.getTask()!=null){
             List<DtoTask> dtoTaskList = new ArrayList<>();
-            for (Task task : response.getTask()) {
+            for (Task task : dbProject.getTask()) {
                 DtoTask dtoTask = new DtoTask();
+                DtoUser dtoUser = new DtoUser();
                 dtoTask.setId(task.getId());
                 dtoTask.setTaskTitle(task.getTaskTitle());
                 dtoTask.setDescription(task.getDescription());
@@ -42,6 +47,13 @@ public class ProjectServiceImpl implements IProjectService{
                 dtoTask.setCompletionDate(task.getCompletionDate());
                 dtoTask.setPriority(task.getPriority());
                 dtoTask.setStatus(task.getStatus());
+
+                if(task.getUser()!=null){
+                    dtoUser.setFirstName(task.getUser().getFirstName());
+                    dtoUser.setLastName(task.getUser().getLastName());
+                    dtoUser.setMailAdress(task.getUser().getMailAdress());
+                    dtoTask.setUser(dtoUser);
+                }
                 dtoTaskList.add(dtoTask);
             }
             dtoProject.setTask(dtoTaskList);

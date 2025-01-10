@@ -12,6 +12,9 @@ import com.myProject.task_manager.dto.DtoProject;
 import com.myProject.task_manager.dto.DtoTask;
 import com.myProject.task_manager.dto.DtoUser;
 import com.myProject.task_manager.entity.Task;
+import com.myProject.task_manager.exception.BaseException;
+import com.myProject.task_manager.exception.ErrorMessage;
+import com.myProject.task_manager.exception.MessageType;
 import com.myProject.task_manager.repository.TaskRepository;
 import com.myProject.task_manager.services.ITaskService;
 
@@ -27,7 +30,7 @@ public class TaskServiceImpl implements ITaskService{
     }
 
     @Override
-    public List<DtoTask> getTaskList() { //burada kaldın buraya projeleri de ekle.
+    public List<DtoTask> getTaskList() {
 
         List <Task> dbTask = taskRepository.findAll();
         List <DtoTask> responseDtoTask = new ArrayList<>(); 
@@ -42,6 +45,13 @@ public class TaskServiceImpl implements ITaskService{
                 dtoUser.setLastName(task.getUser().getLastName());
                 dtoUser.setMailAdress(task.getUser().getMailAdress());
                 dtoTask.setUser(dtoUser);
+            }
+            if(task.getProject()!=null){
+                DtoProject dtoProject = new DtoProject();
+                dtoProject.setId(task.getProject().getId());
+                dtoProject.setProjectName(task.getProject().getProjectName());
+                dtoProject.setDescription(task.getProject().getDescription());
+                dtoTask.setProject(dtoProject);
             }
             responseDtoTask.add(dtoTask);
         }
@@ -65,7 +75,7 @@ public class TaskServiceImpl implements ITaskService{
     }
 
     @Override
-    public DtoTask getTaskById(int id) {
+    public DtoTask getTaskById(Integer id) {
         Optional<Task> optional = taskRepository.findById(id);
         DtoTask dtoTask = new DtoTask();
         if(optional.isPresent()){
@@ -88,6 +98,6 @@ public class TaskServiceImpl implements ITaskService{
             }
             return dtoTask; 
         }
-        return null;
+        throw new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD,id.toString()));
     }
 }

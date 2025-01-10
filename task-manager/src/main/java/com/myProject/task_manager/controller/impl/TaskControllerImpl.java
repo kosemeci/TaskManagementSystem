@@ -45,7 +45,7 @@ public class TaskControllerImpl implements ITaskController{
 
     @GetMapping("/task/{id}")
     @Override
-    public DtoTask getTaskById(@PathVariable int id) {
+    public DtoTask getTaskById(@PathVariable Integer id) {
         return taskService.getTaskById(id);
     }
 

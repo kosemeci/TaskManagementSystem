@@ -4,5 +4,5 @@ import com.myProject.task_manager.dto.DtoProject;
 
 public interface IProjectController {
     
-    public DtoProject findProjectById(int id);
+    public DtoProject findProjectById(Integer id);
 }

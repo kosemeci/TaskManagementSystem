@@ -10,6 +10,6 @@ public interface ITaskController {
     public Task addTask(Task task);
     public List<DtoTask> getTaskList();
     public Task updateTask(int id,Task task);
-    public DtoTask getTaskById(int id);
+    public DtoTask getTaskById(Integer id);
     
 }

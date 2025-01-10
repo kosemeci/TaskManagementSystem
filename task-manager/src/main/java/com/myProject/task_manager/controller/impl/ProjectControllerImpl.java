@@ -19,7 +19,7 @@ public class ProjectControllerImpl implements IProjectController{
     
     @GetMapping("/project/{id}")
     @Override
-    public DtoProject findProjectById(@PathVariable int id) {
+    public DtoProject findProjectById(@PathVariable Integer id) {
         return projectService.findProjectById(id);
     }   
 }

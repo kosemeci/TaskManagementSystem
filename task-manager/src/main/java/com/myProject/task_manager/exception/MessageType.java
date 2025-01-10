@@ -5,7 +5,9 @@ import lombok.Getter;
 @Getter
 public enum MessageType {
     
-    NOT_EXIST_RECORD("1001","Kayıt bulunamadı."),
+    NOT_EXIST_USER_RECORD("1001","Kullanıcı kaydı bulunamadı."),
+    NOT_EXIST_PROJECT_RECORD("1002","Proje kaydı bulunamadı"),
+    NOT_EXIST_TASK_RECORD("1003","Task kaydı bulunamadı."),
     UNKNOWN_ERROR("9999","Bilinmeyen bir hata oluştu.");
 
     private String message;

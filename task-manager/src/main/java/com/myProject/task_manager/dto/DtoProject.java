@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(value=Include.NON_NULL)
 public class DtoProject {
     
-    private int id;
+    private Integer id;
     private String projectName;
     private String description;
     private List<DtoTask> task;

@@ -87,8 +87,6 @@ public class UserServiceImpl implements IUserService{
             }
             return dtoUser;
         }
-        throw new BaseException(new ErrorMessage(MessageType.NOT_EXIST_RECORD, id.toString()));
+        throw new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD, id.toString()));
     }
-
-    
 }

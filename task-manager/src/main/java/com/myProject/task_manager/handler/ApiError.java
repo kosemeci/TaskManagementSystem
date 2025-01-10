@@ -1,4 +1,4 @@
-package com.myProject.task_manager.exception;
+package com.myProject.task_manager.handler;
 
 import java.util.Date;
 
@@ -14,6 +14,7 @@ public class ApiError<T> {
     
     private String id;
     private Date errorTime;
+    private String path;
     private T errors;
 
 }

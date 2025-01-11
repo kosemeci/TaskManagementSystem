@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myProject.task_manager.controller.BaseController;
 import com.myProject.task_manager.controller.IUserController;
 import com.myProject.task_manager.dto.DtoUser;
 import com.myProject.task_manager.dto.DtoUserIU;
+import com.myProject.task_manager.entity.RootEntity;
 import com.myProject.task_manager.services.IUserService;
 
 import jakarta.validation.Valid;
@@ -20,7 +22,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/task-management-system")
-public class UserControllerImpl implements IUserController {
+public class UserControllerImpl extends BaseController implements IUserController {
 
     @Autowired
     private IUserService userService;
@@ -39,8 +41,8 @@ public class UserControllerImpl implements IUserController {
 
     @GetMapping("/user/{id}")
     @Override
-    public DtoUser getUserById(@PathVariable Integer id) {
-        return userService.getUserById(id);
+    public RootEntity<DtoUser> getUserById(@PathVariable Integer id) {
+        return ok(userService.getUserById(id));
     }
 
 

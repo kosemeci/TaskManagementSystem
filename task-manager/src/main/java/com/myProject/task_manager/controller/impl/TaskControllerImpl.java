@@ -11,15 +11,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myProject.task_manager.controller.BaseController;
 import com.myProject.task_manager.controller.ITaskController;
 import com.myProject.task_manager.dto.DtoTask;
+import com.myProject.task_manager.entity.RootEntity;
 import com.myProject.task_manager.entity.Task;
 import com.myProject.task_manager.services.ITaskService;
 
 
 @RestController
 @RequestMapping("/task-management-system")
-public class TaskControllerImpl implements ITaskController{
+public class TaskControllerImpl extends BaseController implements ITaskController{
 
     @Autowired
     ITaskService taskService;
@@ -45,8 +47,8 @@ public class TaskControllerImpl implements ITaskController{
 
     @GetMapping("/task/{id}")
     @Override
-    public DtoTask getTaskById(@PathVariable Integer id) {
-        return taskService.getTaskById(id);
+    public RootEntity<DtoTask> getTaskById(@PathVariable Integer id) {
+        return ok(taskService.getTaskById(id));
     }
 
 

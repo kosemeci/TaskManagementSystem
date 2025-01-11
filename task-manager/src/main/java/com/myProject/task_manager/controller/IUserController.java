@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.myProject.task_manager.dto.DtoUser;
 import com.myProject.task_manager.dto.DtoUserIU;
+import com.myProject.task_manager.entity.RootEntity;
 
 public interface IUserController {
 
@@ -12,6 +13,6 @@ public interface IUserController {
 
      public List<DtoUser> getUserList();
 
-     public DtoUser getUserById(Integer id);
+     public RootEntity<DtoUser> getUserById(Integer id);
 
 }

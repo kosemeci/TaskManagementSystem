@@ -36,6 +36,9 @@ public class User {
     @Column(name = "mail_adress",nullable = false,unique = true)
     private String mailAdress;
 
+    @Column(name = "password",nullable = false)
+    private String password;
+
     @Column(name = "tel_number",nullable = false,unique = true)
     private String telNumber;
 

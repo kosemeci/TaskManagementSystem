@@ -30,7 +30,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> 
                 auth.requestMatchers("/auth/login","/auth/register",
-                                    "/task-management-system/task-list","/task-management-system/user-list").permitAll()
+                                    "/task-management-system/task-list").permitAll()
+                .requestMatchers("/task-management-system/user-list").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

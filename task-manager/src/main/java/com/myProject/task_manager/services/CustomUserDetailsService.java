@@ -8,22 +8,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.myProject.task_manager.entity.UserEntity;
-import com.myProject.task_manager.repository.UserEntityRepository;
+import com.myProject.task_manager.entity.User;
+import com.myProject.task_manager.repository.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService{
 
-    private final UserEntityRepository userEntityRepository;
+    private final UserRepository userRepository;
 
-    public CustomUserDetailsService(UserEntityRepository userEntityRepository) {
-        this.userEntityRepository=userEntityRepository;
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository=userRepository;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        UserEntity user = userEntityRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException(username+"User not found."));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
+    public UserDetails loadUserByUsername(String mailAddress) {
+        User user = userRepository.findByMailAdress(mailAddress).orElseThrow(()->new UsernameNotFoundException(mailAddress+"User not found."));
+        return new org.springframework.security.core.userdetails.User(user.getMailAdress(), user.getPassword(), new ArrayList<>());
     }
 
 }

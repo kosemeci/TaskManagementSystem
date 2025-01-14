@@ -27,6 +27,8 @@ public class DtoUserIU {
     @Email(message="Enter a valid mail format!")
     private String mailAdress;
 
+    private String password;
+
     @NotEmpty(message="Role field cannot be empty or null!")
     private String role;
 

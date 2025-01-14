@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.myProject.task_manager.dto.DtoTask;
@@ -63,14 +64,24 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public DtoUser getUserById(Integer id){
-        Optional<User> optional = userRepository.findById(id);
-        DtoUser dtoUser = new DtoUser();
-        List <DtoTask> dtoTaskList = new ArrayList<>();
-        if(optional.isPresent()){
-            User user = optional.get();
-            BeanUtils.copyProperties(user, dtoUser); 
-            if(user.getTask()!=null){
+public DtoUser getUserById(Integer id) {
+    String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    Optional<User> optional = userRepository.findById(id);
+
+    if (optional.isPresent()) {
+        User user = optional.get();
+
+        // Kullanıcının sadece kendi kaydına erişebilmesi için mail adresini kontrol ediyoruz
+        if (user.getMailAdress() != null && user.getMailAdress().equals(currentUsername)) {
+            DtoUser dtoUser = new DtoUser();
+            List<DtoTask> dtoTaskList = new ArrayList<>();
+
+            // Kullanıcı bilgilerini DTO'ya kopyalıyoruz
+            BeanUtils.copyProperties(user, dtoUser);
+
+            // Kullanıcının görevleri varsa, görevleri DTO'ya kopyalıyoruz
+            if (user.getTask() != null) {
                 for (Task task : user.getTask()) {
                     DtoTask dtoTask = new DtoTask();
                     dtoTask.setId(task.getId());
@@ -85,8 +96,14 @@ public class UserServiceImpl implements IUserService{
                 }
                 dtoUser.setTask(dtoTaskList);
             }
+
             return dtoUser;
+        } else {
+            throw new BaseException(new ErrorMessage(MessageType.NOT_EXIST_PROJECT_RECORD, "You are not authorized to access this user."));
         }
+    } else {
         throw new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD, id.toString()));
     }
+}
+
 }

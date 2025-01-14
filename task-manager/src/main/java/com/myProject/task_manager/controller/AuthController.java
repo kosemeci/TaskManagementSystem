@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.myProject.task_manager.dto.AuthRequest;
-import com.myProject.task_manager.entity.UserEntity;
-import com.myProject.task_manager.repository.UserEntityRepository;
+import com.myProject.task_manager.dto.DtoUserIU;
+import com.myProject.task_manager.dto.LoginRequest;
+import com.myProject.task_manager.entity.User;
+import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.security.JwtUtil;
 
 
@@ -23,44 +24,46 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
-    private final UserEntityRepository userEntityRepository;
+    private final UserRepository userRepository;
 
     public AuthController(AuthenticationManager authenticationManager,
                                 JwtUtil jwtUtil,
                                 PasswordEncoder passwordEncoder,
-                                UserEntityRepository userEntityRepository){
+                                UserRepository userRepository){
         this.authenticationManager=authenticationManager;
         this.jwtUtil=jwtUtil;
         this.passwordEncoder=passwordEncoder;
-        this.userEntityRepository=userEntityRepository;
+        this.userRepository=userRepository;
     }
     
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody AuthRequest request) {
-        if(userEntityRepository.findByUsername(request.getUsername()).isPresent()){
+    public ResponseEntity<String> register(@RequestBody DtoUserIU dtoUserIU) {
+        if(userRepository.findByMailAdress(dtoUserIU.getMailAdress()).isPresent()){
             return ResponseEntity.badRequest().body("Username is already token.");
         }
-        UserEntity user = new UserEntity();
-        user.setUsername(request.getUsername());
-        String encodedPassword = passwordEncoder.encode(request.getPassword());
-        System.out.println("encodedPassword  : " + encodedPassword);
+        String encodedPassword = passwordEncoder.encode(dtoUserIU.getPassword());
+        User user = new User();
+        user.setMailAdress(dtoUserIU.getMailAdress());
+        user.setBirthOfDate(dtoUserIU.getBirthOfDate());
+        user.setFirstName(dtoUserIU.getFirstName());
+        user.setLastName(dtoUserIU.getLastName());
+        user.setRole(dtoUserIU.getRole());
+        user.setTelNumber(dtoUserIU.getTelNumber());
         user.setPassword(encodedPassword);
-        userEntityRepository.save(user);
+        System.out.println("encodedPassword  : " + encodedPassword);
+        userRepository.save(user);
         return ResponseEntity.ok("User saved successfully :)");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
         try {
-            // UserEntity user = userEntityRepository.findByUsername(request.getUsername())
-            //     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-            // if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            //     throw new BadCredentialsException("Invalid credentialsss");
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMailAdress(), request.getPassword()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("şifreler mi eşleşmedi gülüm");
         }
-        String token = jwtUtil.generateToken(request.getUsername());
+        String token = jwtUtil.generateToken(request.getMailAdress());
         return ResponseEntity.ok(token);
     }
 

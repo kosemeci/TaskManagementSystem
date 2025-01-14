@@ -16,6 +16,8 @@ import com.myProject.task_manager.entity.User;
 import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.security.JwtUtil;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -37,7 +39,7 @@ public class AuthController {
     }
     
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody DtoUserIU dtoUserIU) {
+    public ResponseEntity<String> register(@RequestBody @Valid DtoUserIU dtoUserIU) {
         if(userRepository.findByMailAdress(dtoUserIU.getMailAdress()).isPresent()){
             return ResponseEntity.badRequest().body("Username is already token.");
         }

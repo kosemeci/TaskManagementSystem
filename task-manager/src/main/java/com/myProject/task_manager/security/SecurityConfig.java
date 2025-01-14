@@ -27,9 +27,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
          http
-            .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> 
-                auth.requestMatchers("/auth/login","/auth/register").permitAll()
+                auth.requestMatchers("/auth/login","/auth/register",
+                                    "/task-management-system/task-list","/task-management-system/user-list").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

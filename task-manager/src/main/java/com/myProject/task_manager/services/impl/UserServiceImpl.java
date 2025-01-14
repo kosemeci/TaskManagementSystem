@@ -64,7 +64,7 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-public DtoUser getUserById(Integer id) {
+    public DtoUser getUserById(Integer id) {
     String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
     Optional<User> optional = userRepository.findById(id);

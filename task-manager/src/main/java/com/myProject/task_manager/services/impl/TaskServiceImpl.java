@@ -62,9 +62,7 @@ public class TaskServiceImpl implements ITaskService{
     public Task updateTask(int id, Task task) {
         
         Optional<Task> optional = taskRepository.findById(id);
-        // Task newTask = new Task();
         if(optional.isPresent()){
-            // BeanUtils.copyProperties(optional, newTask);
             Task newTask = optional.get();
             newTask.setStatus(task.getStatus());
             newTask.setCompletionDate(task.getCompletionDate());

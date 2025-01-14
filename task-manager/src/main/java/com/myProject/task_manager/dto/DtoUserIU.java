@@ -28,14 +28,13 @@ public class DtoUserIU {
     @Email(message="Enter a valid mail format!")
     private String mailAdress;
 
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-             message = "Password must be at least 8 characters long, include at least one letter, one number, and one special character")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&.])[A-Za-z\\d@$!%*?&.]{6,20}$", 
+         message = "Password must contain at least one letter, one number, and one special character")
     private String password;
 
-    @NotEmpty(message="Role field cannot be empty or null!")
-    private String role;
+    @NotEmpty(message="Position field cannot be empty or null!")
+    private String position;
 
-    // @NotEmpty(message="Birth of date field cannot be empty!")
     @NotNull(message="Birth of date field cannot be null!")
     private LocalDate birthOfDate;
 

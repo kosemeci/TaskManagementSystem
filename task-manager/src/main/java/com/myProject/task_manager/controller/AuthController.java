@@ -49,7 +49,7 @@ public class AuthController {
         user.setBirthOfDate(dtoUserIU.getBirthOfDate());
         user.setFirstName(dtoUserIU.getFirstName());
         user.setLastName(dtoUserIU.getLastName());
-        user.setRole(dtoUserIU.getRole());
+        user.setPosition(dtoUserIU.getPosition());
         user.setTelNumber(dtoUserIU.getTelNumber());
         user.setPassword(encodedPassword);
         System.out.println("encodedPassword  : " + encodedPassword);

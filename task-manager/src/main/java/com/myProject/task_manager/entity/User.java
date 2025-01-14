@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,8 +47,12 @@ public class User {
     @Column(name="birth_of_date",nullable = false)
     private LocalDate birthOfDate;
 
-    @Column(name = "role",nullable = false)
-    private String role;
+    @Column(name = "position",nullable = false)
+    private String position;
+
+    @Column(name= "role")
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference

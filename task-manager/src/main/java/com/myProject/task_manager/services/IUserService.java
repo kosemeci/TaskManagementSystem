@@ -13,4 +13,6 @@ public interface IUserService {
 
     public DtoUser getUserById(Integer id);
 
+    public DtoUser changeRole(Integer id,String role);
+
 }

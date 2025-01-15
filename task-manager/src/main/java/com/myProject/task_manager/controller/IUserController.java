@@ -15,4 +15,6 @@ public interface IUserController {
 
      public RootEntity<DtoUser> getUserById(Integer id);
 
+     public RootEntity<DtoUser> changeRole(Integer id,String role);
+
 }

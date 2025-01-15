@@ -32,6 +32,7 @@ public class SecurityConfig {
                 auth.requestMatchers("/auth/login","/auth/register",
                                     "/task-management-system/task-list").permitAll()
                 .requestMatchers("/task-management-system/user-list").hasAuthority("ADMIN")
+                .requestMatchers("/task-management-system/change-role/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

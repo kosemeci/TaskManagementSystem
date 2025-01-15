@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.myProject.task_manager.dto.DtoTask;
 import com.myProject.task_manager.dto.DtoUser;
 import com.myProject.task_manager.dto.DtoUserIU;
+import com.myProject.task_manager.entity.Role;
 import com.myProject.task_manager.entity.Task;
 import com.myProject.task_manager.entity.User;
 import com.myProject.task_manager.exception.BaseException;
@@ -106,4 +107,17 @@ public class UserServiceImpl implements IUserService{
     }
 }
 
+    @Override
+    public DtoUser changeRole(Integer id, String role) {
+        Optional<User> optional = userRepository.findById(id);
+        DtoUser dtoUser = new DtoUser();
+        if(optional.isPresent()){
+            User user = optional.get();
+            Role enumRole = Role.valueOf(role.toUpperCase());
+            user.setRole(enumRole);
+            userRepository.save(user);
+            BeanUtils.copyProperties(user, dtoUser); 
+        }
+        return dtoUser;
+    }
 }

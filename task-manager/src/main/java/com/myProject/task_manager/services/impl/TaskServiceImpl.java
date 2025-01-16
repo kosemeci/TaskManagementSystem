@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.myProject.task_manager.dto.DtoProject;
 import com.myProject.task_manager.dto.DtoTask;
+import com.myProject.task_manager.dto.DtoTaskIU;
 import com.myProject.task_manager.dto.DtoUser;
 import com.myProject.task_manager.entity.Task;
 import com.myProject.task_manager.exception.BaseException;
@@ -25,8 +26,13 @@ public class TaskServiceImpl implements ITaskService{
     TaskRepository taskRepository;
 
     @Override
-    public Task createTask(Task task) {
-        return taskRepository.save(task);
+    public DtoTask createTask(DtoTaskIU dtoTaskIU) {
+        DtoTask dtoTask = new DtoTask();
+        Task task = new Task();
+        BeanUtils.copyProperties(dtoTaskIU, dtoTask);
+        BeanUtils.copyProperties(dtoTask, task);
+        taskRepository.save(task);
+        return dtoTask;
     }
 
     @Override

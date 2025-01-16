@@ -33,7 +33,8 @@ public class Task {
     private String description;
 
     @Column(name = "priority",nullable = false)
-    private String priority = "Medium";
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
 
     @Column(name= "status",nullable = false)
     @Enumerated(EnumType.STRING)

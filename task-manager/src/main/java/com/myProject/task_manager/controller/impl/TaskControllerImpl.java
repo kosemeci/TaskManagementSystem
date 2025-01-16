@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.myProject.task_manager.controller.BaseController;
 import com.myProject.task_manager.controller.ITaskController;
 import com.myProject.task_manager.dto.DtoTask;
+import com.myProject.task_manager.dto.DtoTaskIU;
 import com.myProject.task_manager.entity.RootEntity;
 import com.myProject.task_manager.entity.Task;
 import com.myProject.task_manager.services.ITaskService;
+
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -30,8 +33,8 @@ public class TaskControllerImpl extends BaseController implements ITaskControlle
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('ADMIN')")
     @Override
-    public Task createTask(@RequestBody Task task) {
-        return taskService.createTask(task);
+    public DtoTask createTask(@RequestBody @Valid DtoTaskIU dtoTaskIU) {
+        return taskService.createTask(dtoTaskIU);
     }
 
     @GetMapping("/all")

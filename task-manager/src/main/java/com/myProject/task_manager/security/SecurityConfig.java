@@ -30,11 +30,12 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> 
                 auth.requestMatchers("/auth/login","/auth/register",
-                                    "/task-management/task/all","/user-management/user/choose/**","user-management/user/all").permitAll()
-                // .requestMatchers("/user-management/user/all").hasAuthority("ADMIN")
+                                    "/task-management/task/all").permitAll()
+                .requestMatchers("/user-management/user/all").hasAuthority("ADMIN")
                 .requestMatchers("/task-management-system/change-role/**").hasAuthority("ADMIN")
                 .requestMatchers("/task-management/task/create").hasAuthority("ADMIN")
                 .requestMatchers("/task-management/task/update/**").hasAuthority("ADMIN")
+                .requestMatchers("/user-management/user/choose/**").hasAuthority("USER")
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

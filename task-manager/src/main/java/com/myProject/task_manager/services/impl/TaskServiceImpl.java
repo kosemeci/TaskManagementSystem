@@ -25,7 +25,7 @@ public class TaskServiceImpl implements ITaskService{
     TaskRepository taskRepository;
 
     @Override
-    public Task addTask(Task task) {
+    public Task createTask(Task task) {
         return taskRepository.save(task);
     }
 

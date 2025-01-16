@@ -14,6 +14,7 @@ import com.myProject.task_manager.dto.DtoTask;
 import com.myProject.task_manager.dto.DtoUser;
 import com.myProject.task_manager.dto.DtoUserIU;
 import com.myProject.task_manager.entity.Role;
+import com.myProject.task_manager.entity.Status;
 import com.myProject.task_manager.entity.Task;
 import com.myProject.task_manager.entity.User;
 import com.myProject.task_manager.exception.BaseException;
@@ -136,7 +137,7 @@ public class UserServiceImpl implements IUserService{
         if(task.getUser() == null){// yani task bir kullanıcıya atanmamışsa
             task.setUser(user);
             task.setAssignedDate(LocalDate.now());
-            task.setStatus("in-progress");
+            task.setStatus(Status.IN_PROGRESS);
             taskRepository.save(task);
             List<Task> taskOfUser = user.getTask();
             List<DtoTask> dtoTaskList = new ArrayList<>();

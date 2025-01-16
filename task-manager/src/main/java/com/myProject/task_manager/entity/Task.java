@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,12 +36,8 @@ public class Task {
     private String priority = "Medium";
 
     @Column(name= "status",nullable = false)
-    private String status="Pending";
-    // PENDING: Görev oluşturuldu ancak henüz başlatılmadı.
-    // IN_PROGRESS: Görev üzerinde çalışılıyor.
-    // COMPLETED: Görev başarıyla tamamlandı.
-    // FAILED: Görev başarısızlıkla sonuçlandı.
-    // CANCELLED: Görev iptal edildi.
+    @Enumerated(EnumType.STRING)
+    private Status status=Status.PENDING;
 
     @Column(name="assigned_date",nullable = true)
     private LocalDate assignedDate ;

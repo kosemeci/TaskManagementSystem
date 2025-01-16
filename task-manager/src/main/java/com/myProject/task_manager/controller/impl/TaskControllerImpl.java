@@ -30,8 +30,8 @@ public class TaskControllerImpl extends BaseController implements ITaskControlle
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('ADMIN')")
     @Override
-    public Task addTask(@RequestBody Task task) {
-        return taskService.addTask(task);
+    public Task createTask(@RequestBody Task task) {
+        return taskService.createTask(task);
     }
 
     @GetMapping("/all")

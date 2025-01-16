@@ -38,4 +38,26 @@ JWT is integrated for secure authentication and authorization in this applicatio
 3. Configure application properties with database credentials.
 4. Run the application with the `spring-boot:run` Maven command.
 
+## FEATURES
+ - **USER REGISTRATION AND LOGIN**
+     Users can register and log in to the system securely.
+     Authentication is handled using JWT (JSON Web Token) for secure session management.
+ - **TASK MANAGEMENT**
+  View all tasks with ease.
+    Access detailed information about specific tasks.
+    Select and manage tasks assigned to users.
+    Task Status Updates: Tasks can be updated with statuses such as In Progress, Completed, etc.
+    Task Priority Levels: Tasks are categorized as Low, Medium, or High.
+    Start and End Dates: Tasks include start and end dates for better time tracking.
+ - **USER MANAGEMENT**
+    View all users in the system.
+    Assign roles to users (e.g., admin, user).
+    Role-Based Permissions: Only admins can assign or update roles.
+ - **PROJECT MANAGEMENT**
+    View all projects in the system.
+    Access detailed information about specific projects.
+ - **SECURITY AND AUTHORIZATION**
+    Role-Based Access Control: Ensures restricted access to certain features depending on user roles.
+    Secure Authentication: Token-based authentication implemented using JWT.
+
 ---

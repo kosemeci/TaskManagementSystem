@@ -29,9 +29,9 @@ public class TaskServiceImpl implements ITaskService{
     public DtoTask createTask(DtoTaskIU dtoTaskIU) {
         DtoTask dtoTask = new DtoTask();
         Task task = new Task();
-        BeanUtils.copyProperties(dtoTaskIU, dtoTask);
-        BeanUtils.copyProperties(dtoTask, task);
-        taskRepository.save(task);
+        BeanUtils.copyProperties(dtoTaskIU, task);
+        Task dbTask = taskRepository.save(task);
+        BeanUtils.copyProperties(dbTask, dtoTask);
         return dtoTask;
     }
 

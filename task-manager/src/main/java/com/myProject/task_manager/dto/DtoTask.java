@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.myProject.task_manager.entity.Priority;
 import com.myProject.task_manager.entity.Status;
 
 import lombok.AllArgsConstructor;
@@ -21,7 +20,7 @@ public class DtoTask {
     private int id;
     private String taskTitle;
     private String description;
-    private Priority priority;    
+    private String priority;    
     private Status status=Status.PENDING;
     private LocalDate assignedDate ;
     private LocalDate completionDate ;

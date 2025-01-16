@@ -2,7 +2,6 @@ package com.myProject.task_manager.dto;
 
 import java.time.LocalDate;
 
-import com.myProject.task_manager.entity.Priority;
 import com.myProject.task_manager.entity.Status;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -24,7 +23,7 @@ public class DtoTaskIU {
 
     @NotEmpty(message="Priority field cannot be empty or null!")
     @Pattern(regexp = "^(LOW|MEDIUM|HIGH)$", message = "Priority field must be one of: LOW, MEDIUM, HIGH")
-    private Priority priority;
+    private String priority;
     
     private Status status=Status.PENDING;
     private LocalDate deadline ;

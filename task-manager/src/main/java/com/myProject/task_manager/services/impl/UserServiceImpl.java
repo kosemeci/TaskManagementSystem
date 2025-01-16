@@ -130,7 +130,7 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public DtoUser chooseTask(Integer userId, Integer taskId) {
+    public DtoUser chooseTask(Integer userId, Integer taskId) {//Kullanıcı sadece kendine atama yapabilmesi için düzenleme
         User user = userRepository.findById(userId)
                         .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
         Task task = taskRepository.findById(taskId)

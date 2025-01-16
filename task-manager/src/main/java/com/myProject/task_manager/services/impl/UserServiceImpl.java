@@ -38,7 +38,6 @@ public class UserServiceImpl implements IUserService{
         DtoUser response = new DtoUser();
         User user = new User();
         BeanUtils.copyProperties(dtoUserIU, user);
-
         User dbUser = userRepository.save(user);
         BeanUtils.copyProperties(dbUser, response);
         return response;
@@ -130,33 +129,44 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public DtoUser chooseTask(Integer userId, Integer taskId) {//Kullanıcı sadece kendine atama yapabilmesi için düzenleme
+    public DtoUser chooseTask(Integer userId, Integer taskId) {
+        //taski user a atama işlemini ya user kendi yapacak ya admin atayacak.
         User user = userRepository.findById(userId)
                         .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
         Task task = taskRepository.findById(taskId)
                         .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD,userId.toString())));
-        DtoUser dtoUser = new DtoUser();
-        if(task.getUser() == null){// yani task bir kullanıcıya atanmamışsa
-            task.setUser(user);
-            task.setAssignedDate(LocalDate.now());
-            task.setStatus(Status.IN_PROGRESS);
-            taskRepository.save(task);
-            List<Task> taskOfUser = user.getTask();
-            List<DtoTask> dtoTaskList = new ArrayList<>();
-            BeanUtils.copyProperties(user, dtoUser);
-            for (Task tasking : taskOfUser) {
-                DtoTask dtoTask = new DtoTask();
-                dtoTask.setAssignedDate(tasking.getAssignedDate());
-                dtoTask.setDescription(tasking.getDescription());
-                dtoTask.setId(tasking.getId());
-                dtoTask.setPriority(tasking.getPriority());
-                dtoTask.setTaskTitle(tasking.getTaskTitle());
-                dtoTask.setStatus(tasking.getStatus());
-                dtoTask.setCompletionDate(tasking.getCompletionDate());
-                dtoTaskList.add(dtoTask);
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        User dbCurrentUser = userRepository.findByMailAdress(currentUser)
+                        .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
+        if((currentUser != null && user.getMailAdress().equals(currentUser))||dbCurrentUser.getRole()==Role.ADMIN){
+            DtoUser dtoUser = new DtoUser();
+            if(task.getUser() == null){// yani task bir kullanıcıya atanmamışsa
+                task.setUser(user);
+                task.setAssignedDate(LocalDate.now());
+                task.setStatus(Status.IN_PROGRESS);
+                taskRepository.save(task);
+                List<Task> taskOfUser = user.getTask();
+                List<DtoTask> dtoTaskList = new ArrayList<>();
+                BeanUtils.copyProperties(user, dtoUser);
+                for (Task tasking : taskOfUser) {
+                    DtoTask dtoTask = new DtoTask();
+                    dtoTask.setAssignedDate(tasking.getAssignedDate());
+                    dtoTask.setDescription(tasking.getDescription());
+                    dtoTask.setId(tasking.getId());
+                    dtoTask.setPriority(tasking.getPriority());
+                    dtoTask.setTaskTitle(tasking.getTaskTitle());
+                    dtoTask.setStatus(tasking.getStatus());
+                    dtoTask.setCompletionDate(tasking.getCompletionDate());
+                    dtoTask.setCreatedDate(tasking.getCreatedDate());
+                    dtoTask.setDeadline(task.getDeadline());
+                    dtoTaskList.add(dtoTask);
+                }
+                dtoUser.setTask(dtoTaskList);
             }
-            dtoUser.setTask(dtoTaskList);
+            return dtoUser;   
         }
-        return dtoUser;
+        else{
+            throw new BaseException(new ErrorMessage(MessageType.UNAUTHORIZED_ACCESS,null));
+        }
     }
 }

@@ -8,6 +8,7 @@ public enum MessageType {
     NOT_EXIST_USER_RECORD("1001","Kullanıcı kaydı bulunamadı."),
     NOT_EXIST_PROJECT_RECORD("1002","Proje kaydı bulunamadı"),
     NOT_EXIST_TASK_RECORD("1003","Task kaydı bulunamadı."),
+    UNAUTHORIZED_ACCESS("1004", "Try unauthorizated access"),
     UNKNOWN_ERROR("9999","Bilinmeyen bir hata oluştu.");
 
     private String message;

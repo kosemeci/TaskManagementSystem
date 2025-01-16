@@ -22,6 +22,7 @@ public class DtoTask {
     private String description;
     private String priority;    
     private Status status=Status.PENDING;
+    private LocalDate createdDate;
     private LocalDate assignedDate ;
     private LocalDate completionDate ;
     private LocalDate deadline ;

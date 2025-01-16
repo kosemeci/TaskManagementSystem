@@ -62,6 +62,7 @@ public class UserServiceImpl implements IUserService{
                 dtoTask.setCompletionDate(task.getCompletionDate());
                 dtoTask.setStatus(task.getStatus());
                 dtoTask.setTaskTitle(task.getTaskTitle());
+                dtoTask.setCreatedDate(task.getCreatedDate());
                 dtoTaskList.add(dtoTask);
             }
             dtoUser.setTask(dtoTaskList);
@@ -99,6 +100,7 @@ public class UserServiceImpl implements IUserService{
                     dtoTask.setCompletionDate(task.getCompletionDate());
                     dtoTask.setStatus(task.getStatus());
                     dtoTask.setTaskTitle(task.getTaskTitle());
+                    dtoTask.setCreatedDate(task.getCreatedDate());
                     dtoTaskList.add(dtoTask);
                 }
                 dtoUser.setTask(dtoTaskList);
@@ -150,6 +152,7 @@ public class UserServiceImpl implements IUserService{
                 dtoTask.setPriority(tasking.getPriority());
                 dtoTask.setTaskTitle(tasking.getTaskTitle());
                 dtoTask.setStatus(tasking.getStatus());
+                dtoTask.setCompletionDate(tasking.getCompletionDate());
                 dtoTaskList.add(dtoTask);
             }
             dtoUser.setTask(dtoTaskList);

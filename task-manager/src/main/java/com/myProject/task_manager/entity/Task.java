@@ -2,6 +2,8 @@ package com.myProject.task_manager.entity;
 
 import java.time.LocalDate;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
@@ -38,6 +40,10 @@ public class Task {
     @Column(name= "status",nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status=Status.PENDING;
+
+    @Column(name = "created_date", updatable = false, nullable = false)
+    @CreationTimestamp
+    private LocalDate createdDate;
 
     @Column(name="assigned_date",nullable = true)
     private LocalDate assignedDate ;

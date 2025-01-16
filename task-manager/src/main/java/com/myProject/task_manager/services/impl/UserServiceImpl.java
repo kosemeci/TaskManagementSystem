@@ -1,5 +1,6 @@
 package com.myProject.task_manager.services.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import com.myProject.task_manager.entity.User;
 import com.myProject.task_manager.exception.BaseException;
 import com.myProject.task_manager.exception.ErrorMessage;
 import com.myProject.task_manager.exception.MessageType;
+import com.myProject.task_manager.repository.TaskRepository;
 import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.services.IUserService;
 
@@ -26,6 +28,9 @@ public class UserServiceImpl implements IUserService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
     
     @Override
     public DtoUser saveUser(DtoUserIU dtoUserIU) {
@@ -117,6 +122,36 @@ public class UserServiceImpl implements IUserService{
             user.setRole(enumRole);
             userRepository.save(user);
             BeanUtils.copyProperties(user, dtoUser); 
+        }
+        return dtoUser;
+    }
+
+    @Override
+    public DtoUser chooseTask(Integer userId, Integer taskId) {
+        User user = userRepository.findById(userId)
+                        .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
+        Task task = taskRepository.findById(taskId)
+                        .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD,userId.toString())));
+        DtoUser dtoUser = new DtoUser();
+        if(task.getUser() == null){// yani task bir kullanıcıya atanmamışsa
+            task.setUser(user);
+            task.setAssignedDate(LocalDate.now());
+            task.setStatus("in-progress");
+            taskRepository.save(task);
+            List<Task> taskOfUser = user.getTask();
+            List<DtoTask> dtoTaskList = new ArrayList<>();
+            BeanUtils.copyProperties(user, dtoUser);
+            for (Task tasking : taskOfUser) {
+                DtoTask dtoTask = new DtoTask();
+                dtoTask.setAssignedDate(tasking.getAssignedDate());
+                dtoTask.setDescription(tasking.getDescription());
+                dtoTask.setId(tasking.getId());
+                dtoTask.setPriority(tasking.getPriority());
+                dtoTask.setTaskTitle(tasking.getTaskTitle());
+                dtoTask.setStatus(tasking.getStatus());
+                dtoTaskList.add(dtoTask);
+            }
+            dtoUser.setTask(dtoTaskList);
         }
         return dtoUser;
     }

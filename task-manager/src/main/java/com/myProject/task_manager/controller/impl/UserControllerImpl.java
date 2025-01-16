@@ -22,10 +22,8 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
-
-
 @RestController
-@RequestMapping("/task-management-system")
+@RequestMapping("/user-management/user")
 public class UserControllerImpl extends BaseController implements IUserController {
 
     @Autowired
@@ -37,14 +35,14 @@ public class UserControllerImpl extends BaseController implements IUserControlle
         return userService.saveUser(dtoUserIU);
     }
 
-    @GetMapping("/user-list")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/all")
+    // @PreAuthorize("hasAuthority('ADMIN')")
     @Override
     public List<DtoUser> getUserList() {
         return userService.getUserList();
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     @Override
     public RootEntity<DtoUser> getUserById(@PathVariable Integer id) {
         return ok(userService.getUserById(id));
@@ -57,8 +55,10 @@ public class UserControllerImpl extends BaseController implements IUserControlle
         return RootEntity.ok(userService.changeRole(id,role));
     }
 
-
-    // @RequestParam: Sorgulama ve filtreleme için.
-    // @PathVariable: Kaynağa doğrudan erişim için.
+    @PutMapping("/choose/task")
+    @Override
+    public RootEntity<DtoUser> chooseTask(@RequestParam Integer userId,@RequestParam Integer taskId) {
+        return RootEntity.ok(userService.chooseTask(userId,taskId));
+    }
        
 }

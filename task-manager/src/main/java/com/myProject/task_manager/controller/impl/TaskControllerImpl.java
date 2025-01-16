@@ -3,6 +3,7 @@ package com.myProject.task_manager.controller.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,39 +21,36 @@ import com.myProject.task_manager.services.ITaskService;
 
 
 @RestController
-@RequestMapping("/task-management-system")
+@RequestMapping("/task-management/task")
 public class TaskControllerImpl extends BaseController implements ITaskController{
 
     @Autowired
     ITaskService taskService;
 
-    @PostMapping("/add/task")
+    @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Override
     public Task addTask(@RequestBody Task task) {
         return taskService.addTask(task);
     }
 
-    @GetMapping("/task-list")
+    @GetMapping("/all")
     @Override
     public List<DtoTask> getTaskList() {
         return taskService.getTaskList();
     }
 
-    @PutMapping(path="/task-state-update/{id}")
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Override
     public Task updateTask(@PathVariable (name = "id") int id, @RequestBody Task task) {
-        
         return taskService.updateTask(id,task);
     }
 
-    @GetMapping("/task/{id}")
+    @GetMapping("/{id}")
     @Override
     public RootEntity<DtoTask> getTaskById(@PathVariable Integer id) {
         return ok(taskService.getTaskById(id));
     }
-
-
-    
-
-    
+   
 }

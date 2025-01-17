@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myProject.task_manager.controller.BaseController;
@@ -17,7 +18,6 @@ import com.myProject.task_manager.controller.ITaskController;
 import com.myProject.task_manager.dto.DtoTask;
 import com.myProject.task_manager.dto.DtoTaskIU;
 import com.myProject.task_manager.entity.RootEntity;
-import com.myProject.task_manager.entity.Task;
 import com.myProject.task_manager.services.ITaskService;
 
 import jakarta.validation.Valid;
@@ -38,22 +38,23 @@ public class TaskControllerImpl extends BaseController implements ITaskControlle
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @Override
     public List<DtoTask> getTaskList() {
         return taskService.getTaskList();
-    }
-
-    @PutMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @Override
-    public Task updateTask(@PathVariable (name = "id") int id, @RequestBody Task task) {
-        return taskService.updateTask(id,task);
     }
 
     @GetMapping("/{id}")
     @Override
     public RootEntity<DtoTask> getTaskById(@PathVariable Integer id) {
         return ok(taskService.getTaskById(id));
+    }
+
+    @PutMapping("/complete")
+    @PreAuthorize("hasAuthority('USER')")
+    @Override
+    public RootEntity<DtoTask> completeTask(@RequestParam Integer userId,@RequestParam Integer taskId) {
+        return RootEntity.ok(taskService.completeTask(userId,taskId));
     }
    
 }

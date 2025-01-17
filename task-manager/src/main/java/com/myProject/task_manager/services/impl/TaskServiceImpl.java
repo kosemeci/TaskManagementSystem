@@ -1,22 +1,27 @@
 package com.myProject.task_manager.services.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.myProject.task_manager.dto.DtoProject;
 import com.myProject.task_manager.dto.DtoTask;
 import com.myProject.task_manager.dto.DtoTaskIU;
 import com.myProject.task_manager.dto.DtoUser;
+import com.myProject.task_manager.entity.Status;
 import com.myProject.task_manager.entity.Task;
+import com.myProject.task_manager.entity.User;
 import com.myProject.task_manager.exception.BaseException;
 import com.myProject.task_manager.exception.ErrorMessage;
 import com.myProject.task_manager.exception.MessageType;
 import com.myProject.task_manager.repository.TaskRepository;
+import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.services.ITaskService;
 
 @Service
@@ -24,6 +29,9 @@ public class TaskServiceImpl implements ITaskService{
 
     @Autowired
     TaskRepository taskRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public DtoTask createTask(DtoTaskIU dtoTaskIU) {
@@ -65,20 +73,6 @@ public class TaskServiceImpl implements ITaskService{
     }
 
     @Override
-    public Task updateTask(int id, Task task) { // buna bi bakıcaz
-        
-        Optional<Task> optional = taskRepository.findById(id);
-        if(optional.isPresent()){
-            Task newTask = optional.get();
-            newTask.setStatus(task.getStatus());
-            newTask.setCompletionDate(task.getCompletionDate());
-            return taskRepository.save(newTask);
-        }
-        return null;
-        
-    }
-
-    @Override
     public DtoTask getTaskById(Integer id) {
         Optional<Task> optional = taskRepository.findById(id);
         DtoTask dtoTask = new DtoTask();
@@ -103,5 +97,29 @@ public class TaskServiceImpl implements ITaskService{
             return dtoTask; 
         }
         throw new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD,id.toString()));
+    }
+
+    @Override
+    public DtoTask completeTask(Integer userId, Integer taskId) { ///burayı doldurcaz
+        User user = userRepository.findById(userId).orElseThrow(
+            ()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
+        Task task = taskRepository.findById(taskId).orElseThrow(
+            ()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,taskId.toString())));
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        DtoTask dtoTask = new DtoTask();
+        if(task.getCompletionDate()==null && user.getMailAdress().equals(currentUser)){
+            task.setStatus(Status.COMPLETED);
+            task.setCompletionDate(LocalDate.now());
+            taskRepository.save(task);
+            BeanUtils.copyProperties(task, dtoTask);
+            DtoUser dtoUser = new DtoUser();
+            dtoUser.setId(user.getId());
+            dtoUser.setFirstName(user.getFirstName());
+            dtoUser.setLastName(user.getLastName());
+            dtoUser.setMailAdress(user.getMailAdress());
+            dtoTask.setUser(dtoUser);
+            return dtoTask;
+        }
+        throw new BaseException(new ErrorMessage(MessageType.UNAUTHORIZED_ACCESS,null));
     }
 }

@@ -36,7 +36,7 @@ public class UserControllerImpl extends BaseController implements IUserControlle
     }
 
     @GetMapping("/all")
-    // @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Override
     public List<DtoUser> getUserList() {
         return userService.getUserList();

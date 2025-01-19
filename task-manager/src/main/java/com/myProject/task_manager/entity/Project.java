@@ -1,6 +1,9 @@
 package com.myProject.task_manager.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,5 +35,13 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private List<Task> task;
+
+    @Column(name="created_date")
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+
+    @Column(name="completion_percentage")
+    private Double completionPercentage=0.00;
+
 
 }

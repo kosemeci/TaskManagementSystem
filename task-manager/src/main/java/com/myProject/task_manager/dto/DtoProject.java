@@ -1,5 +1,6 @@
 package com.myProject.task_manager.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -18,6 +19,8 @@ public class DtoProject {
     private Integer id;
     private String projectName;
     private String description;
+    private LocalDateTime createdTime;
+    private Double completionPercentage;
     private List<DtoTask> task;
     
 }

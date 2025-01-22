@@ -3,7 +3,9 @@ package com.myProject.task_manager.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +54,6 @@ public class AuthController {
         user.setPosition(dtoUserIU.getPosition());
         user.setTelNumber(dtoUserIU.getTelNumber());
         user.setPassword(encodedPassword);
-        System.out.println("encodedPassword  : " + encodedPassword);
         userRepository.save(user);
         return ResponseEntity.ok("User saved successfully :)");
     }
@@ -61,11 +62,15 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody @Valid LoginRequest request) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMailAdress(), request.getPassword()));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Hatalı şifre, lütfen tekrar deneyin.");
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kullanıcı bulunamadı.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("şifreler mi eşleşmedi gülüm");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Giriş yapılamadı, lütfen tekrar deneyin.");
         }
+
         String token = jwtUtil.generateToken(request.getMailAdress());
         return ResponseEntity.ok(token);
     }
-
 }

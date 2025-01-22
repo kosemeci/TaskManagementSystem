@@ -1,6 +1,7 @@
 package com.myProject.task_manager.controller.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class ProjectControllerImpl extends BaseController implements IProjectCon
     }
 
     @PostMapping("add/task")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Override
     public RootEntity<DtoProject> addTaskToProject(@RequestBody @Valid AddTasksToProject request) {
         return ok(projectService.addTaskToProject(request));

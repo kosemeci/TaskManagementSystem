@@ -100,7 +100,7 @@ public class TaskServiceImpl implements ITaskService{
     }
 
     @Override
-    public DtoTask completeTask(Integer userId, Integer taskId) { ///burayı doldurcaz
+    public DtoTask completeTask(Integer userId, Integer taskId) {
         User user = userRepository.findById(userId).orElseThrow(
             ()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
         Task task = taskRepository.findById(taskId).orElseThrow(

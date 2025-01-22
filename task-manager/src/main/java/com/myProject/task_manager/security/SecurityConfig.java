@@ -29,7 +29,8 @@ public class SecurityConfig {
          http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> 
-                auth.requestMatchers("/auth/login","/auth/register","/project-management/project/add/task").permitAll()
+                auth.requestMatchers("/auth/login","/auth/register").permitAll()
+                .requestMatchers("/project-management/project/add/task").hasAuthority("ADMIN")
                 .requestMatchers("/user-management/user/all").hasAuthority("ADMIN")
                 .requestMatchers("/user-management/change-role/**").hasAuthority("ADMIN")
                 .requestMatchers("/task-management/task/create").hasAuthority("ADMIN")

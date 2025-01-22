@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.myProject.task_manager.dto.AddTasksToProject;
 import com.myProject.task_manager.dto.DtoProject;
 import com.myProject.task_manager.dto.DtoTask;
 import com.myProject.task_manager.dto.DtoUser;
@@ -17,6 +18,7 @@ import com.myProject.task_manager.exception.BaseException;
 import com.myProject.task_manager.exception.ErrorMessage;
 import com.myProject.task_manager.exception.MessageType;
 import com.myProject.task_manager.repository.ProjectRepository;
+import com.myProject.task_manager.repository.TaskRepository;
 import com.myProject.task_manager.services.IProjectService;
 
 @Service
@@ -24,8 +26,11 @@ public class ProjectServiceImpl implements IProjectService{
 
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
     
-    @Override //validasyon işlemleri task ve project için 
+    @Override
     public DtoProject findProjectById(Integer id) { 
         Optional <Project> optional = projectRepository.findById(id);
         if(optional.isEmpty()){
@@ -59,5 +64,65 @@ public class ProjectServiceImpl implements IProjectService{
             dtoProject.setTask(dtoTaskList);
         }
         return dtoProject;
+    }
+
+    @Override
+    public DtoProject addTaskToProject(AddTasksToProject request) {
+        
+        Integer projectId = request.getProjectId();
+        List <Integer> taskIds = request.getTaskIds();
+
+        Project dbProject = projectRepository.findById(projectId).orElseThrow(()->
+            new BaseException(new ErrorMessage(MessageType.NOT_EXIST_PROJECT_RECORD,projectId.toString()))
+        );
+
+        DtoProject dtoProject = new DtoProject();
+        BeanUtils.copyProperties(dbProject, dtoProject);
+        List<DtoTask> dtoTaskList = new ArrayList<>();
+        if(dbProject.getTask()!=null){
+            for (Task currentTask : dbProject.getTask()) {
+
+                DtoTask currentDtoTask = new DtoTask();
+                currentDtoTask.setId(currentTask.getId());
+                currentDtoTask.setTaskTitle(currentTask.getTaskTitle());
+                currentDtoTask.setDescription(currentTask.getDescription());
+                currentDtoTask.setCreatedDate(currentTask.getCreatedDate());
+                currentDtoTask.setDeadline(currentTask.getDeadline());
+
+                DtoUser currentDtoUser = new DtoUser();
+                if(currentTask.getUser()!=null){
+                    currentDtoUser.setId(currentTask.getUser().getId());
+                    currentDtoUser.setFirstName(currentTask.getUser().getFirstName());
+                    currentDtoUser.setLastName(currentTask.getUser().getLastName());
+                    currentDtoUser.setMailAdress(currentTask.getUser().getMailAdress());
+                    currentDtoTask.setUser(currentDtoUser);
+                }
+                dtoTaskList.add(currentDtoTask);
+            }
+            dtoProject.setTask(dtoTaskList);
+        }
+        if(taskIds!=null){
+            for (Integer taskId : taskIds) {
+                Task task = taskRepository.findById(taskId).orElseThrow(()->
+                    new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD,taskId.toString()))
+                );
+                task.setProject(dbProject);
+                taskRepository.save(task);
+                DtoTask dtoTask = new DtoTask();
+                BeanUtils.copyProperties(task, dtoTask);
+                if(task.getUser()!=null){
+                    DtoUser dtoUser = new DtoUser();
+                    dtoUser.setId(task.getUser().getId());
+                    dtoUser.setFirstName(task.getUser().getFirstName());
+                    dtoUser.setLastName(task.getUser().getLastName());
+                    dtoUser.setMailAdress(task.getUser().getMailAdress());
+                    dtoTask.setUser(dtoUser);
+                }
+                dtoTaskList.add(dtoTask);
+            }
+            dtoProject.setTask(dtoTaskList);
+        }
+        return dtoProject;
     } 
+
 }

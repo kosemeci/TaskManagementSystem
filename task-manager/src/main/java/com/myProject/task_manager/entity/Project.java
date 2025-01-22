@@ -1,5 +1,6 @@
 package com.myProject.task_manager.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class Project {
     @Column(name="project_name",nullable=false)
     private String projectName;
 
-    @Column(name="description")
+    @Column(name="description",nullable=false)
     private String description;
 
     @OneToMany(mappedBy = "project")
@@ -38,7 +39,7 @@ public class Project {
 
     @Column(name="created_date")
     @CreationTimestamp
-    private LocalDateTime createdDate;
+    private LocalDate createdDate;
 
     @Column(name="completion_percentage")
     private Double completionPercentage=0.00;

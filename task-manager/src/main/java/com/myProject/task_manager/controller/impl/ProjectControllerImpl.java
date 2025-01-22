@@ -13,6 +13,7 @@ import com.myProject.task_manager.controller.BaseController;
 import com.myProject.task_manager.controller.IProjectController;
 import com.myProject.task_manager.dto.AddTasksToProject;
 import com.myProject.task_manager.dto.DtoProject;
+import com.myProject.task_manager.entity.Project;
 import com.myProject.task_manager.entity.RootEntity;
 import com.myProject.task_manager.services.IProjectService;
 
@@ -31,17 +32,18 @@ public class ProjectControllerImpl extends BaseController implements IProjectCon
         return ok(projectService.findProjectById(id));
     }
 
-    @PostMapping("add/task")
+    @PostMapping("/add/task")
     @PreAuthorize("hasAuthority('ADMIN')")
     @Override
     public RootEntity<DtoProject> addTaskToProject(@RequestBody @Valid AddTasksToProject request) {
         return ok(projectService.addTaskToProject(request));
     }
 
+    @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Override
-    public RootEntity<DtoProject> createProject(DtoProject project) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createProject'");
+    public RootEntity<DtoProject> createProject(@RequestBody DtoProject project) {
+        return ok(projectService.createProject(project));
     }   
 
 }

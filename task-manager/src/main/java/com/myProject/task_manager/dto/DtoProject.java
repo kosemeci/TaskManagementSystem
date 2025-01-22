@@ -1,5 +1,6 @@
 package com.myProject.task_manager.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class DtoProject {
     private Integer id;
     private String projectName;
     private String description;
-    private LocalDateTime createdTime;
+    private LocalDate createdTime;
     private Double completionPercentage;
     private List<DtoTask> task;
     

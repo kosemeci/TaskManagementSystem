@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.myProject.task_manager.dto.AddTasksToProject;
@@ -123,6 +124,17 @@ public class ProjectServiceImpl implements IProjectService{
             dtoProject.setTask(dtoTaskList);
         }
         return dtoProject;
+    }
+
+    @Override
+    public DtoProject createProject(DtoProject dtoProject) {
+        Project newProject = new Project();
+        BeanUtils.copyProperties(dtoProject, newProject);
+        newProject.setCompletionPercentage(0.00);
+        Project dbProject = projectRepository.save(newProject);
+        dtoProject.setCreatedTime(dbProject.getCreatedDate());
+        dtoProject.setCompletionPercentage(dbProject.getCompletionPercentage());
+        return dtoProject; 
     } 
 
 }

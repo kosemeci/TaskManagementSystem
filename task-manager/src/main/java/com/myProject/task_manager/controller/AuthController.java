@@ -58,9 +58,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<String> login(@RequestBody @Valid LoginRequest request) {
         try {
-
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMailAdress(), request.getPassword()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("şifreler mi eşleşmedi gülüm");

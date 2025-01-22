@@ -15,6 +15,8 @@ import com.myProject.task_manager.dto.DtoProject;
 import com.myProject.task_manager.entity.RootEntity;
 import com.myProject.task_manager.services.IProjectService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/project-management/project")
 public class ProjectControllerImpl extends BaseController implements IProjectController{
@@ -30,7 +32,7 @@ public class ProjectControllerImpl extends BaseController implements IProjectCon
 
     @PostMapping("add/task")
     @Override
-    public RootEntity<DtoProject> addTaskToProject(@RequestBody AddTasksToProject request) {
+    public RootEntity<DtoProject> addTaskToProject(@RequestBody @Valid AddTasksToProject request) {
         return ok(projectService.addTaskToProject(request));
     }
 
@@ -40,5 +42,4 @@ public class ProjectControllerImpl extends BaseController implements IProjectCon
         throw new UnsupportedOperationException("Unimplemented method 'createProject'");
     }   
 
-    
 }

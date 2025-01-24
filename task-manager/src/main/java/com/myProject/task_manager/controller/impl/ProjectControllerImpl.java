@@ -13,7 +13,6 @@ import com.myProject.task_manager.controller.BaseController;
 import com.myProject.task_manager.controller.IProjectController;
 import com.myProject.task_manager.dto.AddTasksToProject;
 import com.myProject.task_manager.dto.DtoProject;
-import com.myProject.task_manager.entity.Project;
 import com.myProject.task_manager.entity.RootEntity;
 import com.myProject.task_manager.services.IProjectService;
 

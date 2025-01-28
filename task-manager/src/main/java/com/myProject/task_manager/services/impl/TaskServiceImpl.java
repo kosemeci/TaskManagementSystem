@@ -14,12 +14,14 @@ import com.myProject.task_manager.dto.DtoProject;
 import com.myProject.task_manager.dto.DtoTask;
 import com.myProject.task_manager.dto.DtoTaskIU;
 import com.myProject.task_manager.dto.DtoUser;
+import com.myProject.task_manager.entity.Project;
 import com.myProject.task_manager.entity.Status;
 import com.myProject.task_manager.entity.Task;
 import com.myProject.task_manager.entity.User;
 import com.myProject.task_manager.exception.BaseException;
 import com.myProject.task_manager.exception.ErrorMessage;
 import com.myProject.task_manager.exception.MessageType;
+import com.myProject.task_manager.metrics.CalculateCompletionPercentage;
 import com.myProject.task_manager.repository.TaskRepository;
 import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.services.ITaskService;
@@ -32,6 +34,9 @@ public class TaskServiceImpl implements ITaskService{
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CalculateCompletionPercentage calculate;
 
     @Override
     public DtoTask createTask(DtoTaskIU dtoTaskIU) {
@@ -99,7 +104,7 @@ public class TaskServiceImpl implements ITaskService{
         throw new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD,id.toString()));
     }
 
-    @Override // buradan sonra project tamamlanma oranın değişmesi gerekiyor
+    @Override
     public DtoTask completeTask(Integer userId, Integer taskId) {
         User user = userRepository.findById(userId).orElseThrow(
             ()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
@@ -111,6 +116,7 @@ public class TaskServiceImpl implements ITaskService{
             task.setStatus(Status.COMPLETED);
             task.setCompletionDate(LocalDate.now());
             taskRepository.save(task);
+            double newCompletionPercentage = calculate.calculateCompletionPercentage(task.getProject().getId());
             BeanUtils.copyProperties(task, dtoTask);
             DtoUser dtoUser = new DtoUser();
             dtoUser.setId(user.getId());
@@ -118,6 +124,12 @@ public class TaskServiceImpl implements ITaskService{
             dtoUser.setLastName(user.getLastName());
             dtoUser.setMailAdress(user.getMailAdress());
             dtoTask.setUser(dtoUser);
+
+            DtoProject dtoProject = new DtoProject();
+            Project project = task.getProject();
+            project.setCompletionPercentage(newCompletionPercentage);
+            BeanUtils.copyProperties(project, dtoProject);
+            dtoTask.setProject(dtoProject);
             return dtoTask;
         }
         throw new BaseException(new ErrorMessage(MessageType.UNAUTHORIZED_ACCESS,null));

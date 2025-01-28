@@ -99,7 +99,7 @@ public class TaskServiceImpl implements ITaskService{
         throw new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD,id.toString()));
     }
 
-    @Override
+    @Override // buradan sonra project tamamlanma oranın değişmesi gerekiyor
     public DtoTask completeTask(Integer userId, Integer taskId) {
         User user = userRepository.findById(userId).orElseThrow(
             ()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));

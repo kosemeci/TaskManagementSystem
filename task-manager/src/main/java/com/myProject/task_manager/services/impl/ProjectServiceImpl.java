@@ -17,6 +17,7 @@ import com.myProject.task_manager.entity.Task;
 import com.myProject.task_manager.exception.BaseException;
 import com.myProject.task_manager.exception.ErrorMessage;
 import com.myProject.task_manager.exception.MessageType;
+import com.myProject.task_manager.metrics.CalculateCompletionPercentage;
 import com.myProject.task_manager.repository.ProjectRepository;
 import com.myProject.task_manager.repository.TaskRepository;
 import com.myProject.task_manager.services.IProjectService;
@@ -29,6 +30,9 @@ public class ProjectServiceImpl implements IProjectService{
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private CalculateCompletionPercentage calculate;
     
     @Override
     public DtoProject findProjectById(Integer id) { 
@@ -108,6 +112,8 @@ public class ProjectServiceImpl implements IProjectService{
                 );
                 task.setProject(dbProject);
                 taskRepository.save(task);
+                dbProject.getTask().add(task);
+                projectRepository.save(dbProject);
                 DtoTask dtoTask = new DtoTask();
                 BeanUtils.copyProperties(task, dtoTask);
                 if(task.getUser()!=null){
@@ -121,6 +127,7 @@ public class ProjectServiceImpl implements IProjectService{
                 dtoTaskList.add(dtoTask);
             }
             dtoProject.setTask(dtoTaskList);
+            dtoProject.setCompletionPercentage(calculate.calculateCompletionPercentage(projectId));
         }
         return dtoProject;
     }

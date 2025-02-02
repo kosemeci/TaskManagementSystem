@@ -38,9 +38,9 @@ JWT is integrated for secure authentication and authorization in this applicatio
 This application integrates an SMTP email service to send a welcome email when a user registers. The service is configured to use Gmail’s SMTP server, but it can be adapted to any other email provider.
 
 How Email Sending Works?
-1️⃣ When a new user registers, an event is triggered.
-2️⃣ The MailService class generates a welcome email.
-3️⃣ The email is sent via Spring Boot’s JavaMailSender.
+-  1️⃣ When a new user registers, an event is triggered.
+-  2️⃣ The MailService class generates a welcome email.
+-  3️⃣ The email is sent via Spring Boot’s JavaMailSender.
 
 SMTP Configuration in application.properties
 To enable email sending, configure the following properties in application.properties:

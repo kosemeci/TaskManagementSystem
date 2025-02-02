@@ -4,9 +4,9 @@
 The **Task Management System** (Task Manager) is a robust and user-friendly application designed to streamline task management. Developed using **Spring Boot**, the system provides key features like task creation, updates, task completion tracking, and deletion, all supported by a secure **PostgreSQL** database. The application follows modern software engineering practices, providing high scalability and performance. Additionally, **JWT authentication** has been integrated to ensure secure access and manage user authorization effectively.
 
 ## Key Features
-✅ Database Integration: Built with **PostgreSQL** for secure and efficient data storage.
-✅ Validation and Exception Handling: Comprehensive validation rules and custom exception handling.
-✅ Bidirectional Relationships: One-to-Many relationships between entities like **Users** and **Tasks**.
+-  ✅ Database Integration: Built with **PostgreSQL** for secure and efficient data storage.
+-  ✅ Validation and Exception Handling: Comprehensive validation rules and custom exception handling.
+-  ✅ Bidirectional Relationships: One-to-Many relationships between entities like **Users** and **Tasks**.
 ✅ DTOs for Clean Architecture: Decoupling of domain model from API responses using **DTOs**.
 ✅ Error Logging and Messages: Detailed logging of errors and meaningful error messages.
 ✅ JWT Authentication: Secure user authentication using **JSON Web Tokens**.

@@ -46,12 +46,12 @@ SMTP Configuration in application.properties
 To enable email sending, configure the following properties in application.properties:
 
 # SMTP Configuration
-spring.mail.host=smtp.gmail.com
-spring.mail.port=587
-spring.mail.username=your-email@gmail.com
-spring.mail.password=your-app-password
-spring.mail.properties.mail.smtp.auth=true
-spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.host=smtp.gmail.com 
+spring.mail.port=587 
+spring.mail.username=your-email@gmail.com 
+spring.mail.password=your-app-password 
+spring.mail.properties.mail.smtp.auth=true 
+spring.mail.properties.mail.smtp.starttls.enable=true 
 ⚠️ Security Tip: Do not store sensitive credentials in application.properties. Use environment variables instead.
 
 @Service

@@ -45,6 +45,7 @@ How Email Sending Works?
 SMTP Configuration in application.properties
 To enable email sending, configure the following properties in application.properties:
 
+```properties
 # SMTP Configuration
 spring.mail.host=smtp.gmail.com 
 spring.mail.port=587 

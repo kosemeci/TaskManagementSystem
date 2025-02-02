@@ -20,6 +20,7 @@ import com.myProject.task_manager.entity.User;
 import com.myProject.task_manager.exception.BaseException;
 import com.myProject.task_manager.exception.ErrorMessage;
 import com.myProject.task_manager.exception.MessageType;
+import com.myProject.task_manager.mail.MailService;
 import com.myProject.task_manager.repository.TaskRepository;
 import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.services.IUserService;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements IUserService{
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private MailService mailService;
     
     @Override
     public DtoUser saveUser(DtoUserIU dtoUserIU) {
@@ -163,6 +167,8 @@ public class UserServiceImpl implements IUserService{
                 }
                 dtoUser.setTask(dtoTaskList);
             }
+            String text = "Yeni taskiniz '" + task.getTaskTitle() +"' başarıyla atanmıştır. Kolay gelsin :)";
+            mailService.sendToMail(currentUser, "NEW CHOOSING TASK", text);
             return dtoUser;   
         }
         else{

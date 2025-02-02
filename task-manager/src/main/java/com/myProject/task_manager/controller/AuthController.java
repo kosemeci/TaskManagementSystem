@@ -1,5 +1,6 @@
 package com.myProject.task_manager.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.myProject.task_manager.dto.DtoUserIU;
 import com.myProject.task_manager.dto.LoginRequest;
 import com.myProject.task_manager.entity.User;
+import com.myProject.task_manager.mail.MailService;
 import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.security.JwtUtil;
 
@@ -29,6 +31,9 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+
+    @Autowired
+    private MailService mailService;
 
     public AuthController(AuthenticationManager authenticationManager,
                                 JwtUtil jwtUtil,
@@ -55,6 +60,7 @@ public class AuthController {
         user.setTelNumber(dtoUserIU.getTelNumber());
         user.setPassword(encodedPassword);
         userRepository.save(user);
+        mailService.sendToMail(user.getMailAdress(), "HOSGELDİN DUYURUSU", "Sinyor LTD.ŞTİ ' ye hoş geldin! ");
         return ResponseEntity.ok("User saved successfully :)");
     }
 

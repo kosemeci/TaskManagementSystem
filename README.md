@@ -7,10 +7,10 @@ The **Task Management System** (Task Manager) is a robust and user-friendly appl
 -  ✅ Database Integration: Built with **PostgreSQL** for secure and efficient data storage.
 -  ✅ Validation and Exception Handling: Comprehensive validation rules and custom exception handling.
 -  ✅ Bidirectional Relationships: One-to-Many relationships between entities like **Users** and **Tasks**.
-✅ DTOs for Clean Architecture: Decoupling of domain model from API responses using **DTOs**.
-✅ Error Logging and Messages: Detailed logging of errors and meaningful error messages.
-✅ JWT Authentication: Secure user authentication using **JSON Web Tokens**.
-✅ SMTP Email Service: Sends welcome emails upon user registration.
+-  ✅ DTOs for Clean Architecture: Decoupling of domain model from API responses using **DTOs**.
+-  ✅ Error Logging and Messages: Detailed logging of errors and meaningful error messages.
+-  ✅ JWT Authentication: Secure user authentication using **JSON Web Tokens**.
+-  ✅ SMTP Email Service: Sends welcome emails upon user registration.
 
 ## Security Implementation
 JWT is integrated for secure authentication and authorization in this application. Here's how it works:
@@ -19,14 +19,14 @@ JWT is integrated for secure authentication and authorization in this applicatio
 3. **Role-Based Access Control (RBAC)** to restrict access based on user roles.
 
 ## Technical Details
-🔹 Backend Framework: Spring Boot
-🔹 Database: PostgreSQL
-🔹 Validation: Spring Boot validation annotations (`@NotNull`, `@Size`, etc.)
-🔹 Error Handling: Custom exception classes and global exception handlers with `@ControllerAdvice`
-🔹 JWT Authentication: JWT used for secure user authentication.
-🔹 DTOs: Data Transfer Objects for communication between API and domain model.
-🔹 Relationships: One-to-Many bidirectional relationships with `@OneToMany` and `@ManyToOne`.
-🔹 SMTP Email Service: Integrated for sending welcome emails.
+-  🔹 Backend Framework: Spring Boot
+-  🔹 Database: PostgreSQL
+-  🔹 Validation: Spring Boot validation annotations (`@NotNull`, `@Size`, etc.)
+-  🔹 Error Handling: Custom exception classes and global exception handlers with `@ControllerAdvice`
+-  🔹 JWT Authentication: JWT used for secure user authentication.
+-  🔹 DTOs: Data Transfer Objects for communication between API and domain model.
+-  🔹 Relationships: One-to-Many bidirectional relationships with `@OneToMany` and `@ManyToOne`.
+-  🔹 SMTP Email Service: Integrated for sending welcome emails.
 
 ## Versioning Information
 - **Java Version:** 23

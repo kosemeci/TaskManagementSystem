@@ -128,6 +128,8 @@ public class UserServiceImpl implements IUserService{
             user.setRole(enumRole);
             userRepository.save(user);
             BeanUtils.copyProperties(user, dtoUser); 
+            String text = "Tebrikler! Sınyor Ltd. Şti ' de artık '" + role +"' rolündesiniz. İyi çalışmalar.";
+            mailService.sendToMail(user.getMailAdress(), "NEW ROLE", text);
         }
         return dtoUser;
     }

@@ -54,7 +54,7 @@ spring.mail.password=your-app-password
 spring.mail.properties.mail.smtp.auth=true 
 spring.mail.properties.mail.smtp.starttls.enable=true 
 ⚠️ Security Tip: Do not store sensitive credentials in application.properties. Use environment variables instead.
-
+```
 @Service
 public class MailService {
 

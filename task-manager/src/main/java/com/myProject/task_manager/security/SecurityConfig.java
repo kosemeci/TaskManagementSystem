@@ -30,6 +30,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> 
                 auth.requestMatchers("/auth/login","/auth/register").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/project-management/project/create").hasAuthority("ADMIN")
                 .requestMatchers("/project-management/project/add/task").hasAuthority("ADMIN")
                 .requestMatchers("/user-management/user/all").hasAuthority("ADMIN")

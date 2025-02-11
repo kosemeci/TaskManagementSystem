@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +21,14 @@ import com.myProject.task_manager.entity.User;
 import com.myProject.task_manager.mail.MailService;
 import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.security.JwtUtil;
+import com.myProject.task_manager.services.CustomUserDetailsService;
 
 import jakarta.validation.Valid;
 
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -34,6 +38,9 @@ public class AuthController {
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     public AuthController(AuthenticationManager authenticationManager,
                                 JwtUtil jwtUtil,
@@ -67,12 +74,20 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid LoginRequest request) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMailAdress(), request.getPassword()));
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Hatalı şifre, lütfen tekrar deneyin.");
-        } catch (UsernameNotFoundException e) {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getMailAdress());
+        
+        // Kullanıcı bulunamadığında, manuel olarak hata fırlatıyoruz
+        if (userDetails == null) {
+            throw new UsernameNotFoundException("Kullanıcı bulunamadı.");
+        }
+
+        // Kullanıcı doğrulama işlemi
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMailAdress(), request.getPassword()));
+         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kullanıcı bulunamadı.");
-        } catch (Exception e) {
+        }catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Hatalı şifre, lütfen tekrar deneyin.");
+        }  catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Giriş yapılamadı, lütfen tekrar deneyin.");
         }
 

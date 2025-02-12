@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.myProject.task_manager.dto.DtoProject;
@@ -133,5 +134,12 @@ public class TaskServiceImpl implements ITaskService{
             return dtoTask;
         }
         throw new BaseException(new ErrorMessage(MessageType.UNAUTHORIZED_ACCESS,null));
+    }
+
+    @Override
+    public Integer getUserIdByEmail(String email) {
+        return userRepository.findByMailAdress(email)
+                .map(User::getId)
+                .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı"));
     }
 }

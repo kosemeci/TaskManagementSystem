@@ -1,7 +1,11 @@
 package com.myProject.task_manager.controller;
 
+import java.time.Duration;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,6 +27,7 @@ import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.security.JwtUtil;
 import com.myProject.task_manager.services.CustomUserDetailsService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 
@@ -72,26 +77,44 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginRequest request) {
-        try {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest request, HttpServletResponse response) {
+    try {
+        // Kullanıcıyı yükle (Spring Security tarafından yönetiliyor)
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getMailAdress());
-        
-        // Kullanıcı bulunamadığında, manuel olarak hata fırlatıyoruz
+
         if (userDetails == null) {
             throw new UsernameNotFoundException("Kullanıcı bulunamadı.");
         }
 
         // Kullanıcı doğrulama işlemi
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMailAdress(), request.getPassword()));
-         } catch (UsernameNotFoundException e) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            request.getMailAdress(), request.getPassword()
+        ));
+
+        // JWT Token oluştur
+        String token = jwtUtil.generateToken(request.getMailAdress());
+
+        // HttpOnly Cookie oluştur
+        ResponseCookie cookie = ResponseCookie.from("auth_token", token)
+                .httpOnly(true)   // JavaScript erişemez
+                .secure(true)     // HTTPS üzerinden çalışmalı
+                .sameSite("None") // CSRF koruması sağlar // Çapraz site çerezleri için gerekli
+                .path("/")        // Tüm uygulama için geçerli
+                .maxAge(Duration.ofDays(1)) // 1 gün süresi var
+                .build();
+
+        // Çerezi HTTP yanıtına ekle
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        return ResponseEntity.ok("Login succesfull");
+
+        } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kullanıcı bulunamadı.");
-        }catch (BadCredentialsException e) {
+        } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Hatalı şifre, lütfen tekrar deneyin.");
-        }  catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Giriş yapılamadı, lütfen tekrar deneyin.");
         }
-
-        String token = jwtUtil.generateToken(request.getMailAdress());
-        return ResponseEntity.ok(token);
     }
+
 }

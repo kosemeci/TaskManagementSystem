@@ -14,5 +14,7 @@ public interface ITaskService {
     public DtoTask getTaskById(Integer id);
     
     public DtoTask completeTask(Integer userId,Integer taskId);
+
+    public Integer getUserIdByEmail(String email);
     
 }

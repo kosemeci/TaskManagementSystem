@@ -14,6 +14,6 @@ public interface ITaskController {
 
     public RootEntity<DtoTask> getTaskById(Integer id);
     
-    public RootEntity<DtoTask> completeTask(Integer userId,Integer taskId);
+    public RootEntity<DtoTask> completeTask(Integer taskId);
     
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +42,7 @@ public class TaskControllerImpl extends BaseController implements ITaskControlle
     }
 
     @GetMapping("/all")
-    // @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @Override
     public List<DtoTask> getTaskList() {
         return taskService.getTaskList();
@@ -55,8 +57,15 @@ public class TaskControllerImpl extends BaseController implements ITaskControlle
     @PutMapping("/complete")
     @PreAuthorize("hasAuthority('USER')")
     @Override
-    public RootEntity<DtoTask> completeTask(@RequestParam Integer userId,@RequestParam Integer taskId) {
-        return RootEntity.ok(taskService.completeTask(userId,taskId));
-    }
+    public RootEntity<DtoTask> completeTask(@RequestParam Integer taskId) {
+        // 👇 Kullanıcı bilgilerini JWT'den al
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName(); // Kullanıcının e-posta adresi (JWT içinden)
+        
+        // Kullanıcıyı veritabanından çek (eğer ID lazımsa)
+        Integer userId = taskService.getUserIdByEmail(email); 
+
+        return RootEntity.ok(taskService.completeTask(userId, taskId));
+}
    
 }

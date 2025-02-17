@@ -137,11 +137,11 @@ public class UserServiceImpl implements IUserService{
     @Override
     public DtoUser chooseTask(Integer userId, Integer taskId) {
         //taski user a atama işlemini ya user kendi yapacak ya admin atayacak.
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findById(userId)
                         .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
         Task task = taskRepository.findById(taskId)
                         .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD,userId.toString())));
-        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
         User dbCurrentUser = userRepository.findByMailAdress(currentUser)
                         .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
         if((currentUser != null && user.getMailAdress().equals(currentUser))||dbCurrentUser.getRole()==Role.ADMIN){
@@ -169,12 +169,13 @@ public class UserServiceImpl implements IUserService{
                 }
                 dtoUser.setTask(dtoTaskList);
             }
-            String text = "Yeni taskiniz '" + task.getTaskTitle() +"' başarıyla atanmıştır. Kolay gelsin :)";
-            mailService.sendToMail(currentUser, "NEW CHOOSING TASK", text);
+            // String text = "Yeni taskiniz '" + task.getTaskTitle() +"' başarıyla atanmıştır. Kolay gelsin :)";
+            // mailService.sendToMail(currentUser, "NEW CHOOSING TASK", text);
             return dtoUser;   
         }
         else{
             throw new BaseException(new ErrorMessage(MessageType.UNAUTHORIZED_ACCESS,null));
         }
     }
+
 }

@@ -14,12 +14,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myProject.task_manager.dto.DtoUserIU;
+import com.myProject.task_manager.dto.DtoUserResponse;
 import com.myProject.task_manager.dto.LoginRequest;
 import com.myProject.task_manager.entity.User;
 import com.myProject.task_manager.mail.MailService;
@@ -98,7 +102,7 @@ public class AuthController {
         ResponseCookie cookie = ResponseCookie.from("auth_token", token)
                 .httpOnly(true)   // JavaScript erişemez
                 .secure(true)     // HTTPS üzerinden çalışmalı
-                .sameSite("None") // CSRF koruması sağlar // Çapraz site çerezleri için gerekli
+                .sameSite("Lax") // CSRF koruması sağlar // Çapraz site çerezleri için gerekli
                 .path("/")        // Tüm uygulama için geçerli
                 .maxAge(Duration.ofDays(1)) // 1 gün süresi var
                 .build();
@@ -116,5 +120,19 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Giriş yapılamadı, lütfen tekrar deneyin.");
         }
     }
+
+    @GetMapping("/fetch/id")
+    public ResponseEntity<DtoUserResponse> getUserIdByMail(@RequestParam String mail) {
+        return userRepository.findByMailAdress(mail)
+                .map(user -> new DtoUserResponse(user.getId(), user.getRole()))
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+    }
+
+    @ExceptionHandler(Exception.class)
+public ResponseEntity<String> handleException(Exception e) {
+    e.printStackTrace(); // Hata detaylarını konsola yazdır
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Hata oluştu: " + e.getMessage());
+}
 
 }

@@ -33,8 +33,8 @@ public class SecurityConfig {
     public CorsConfigurationSource configurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList( "Content-Type"));
+        configuration.setAllowedMethods(Arrays.asList("PUT","POST","GET","DELETE","OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList( "Authorization","Content-Type"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -46,8 +46,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(c-> c.configurationSource(configurationSource()))
             .authorizeHttpRequests(auth -> 
-                auth.requestMatchers("/auth/login","/auth/register").permitAll()
-                // .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                auth.requestMatchers("/auth/login","/auth/register","/auth/fetch/id").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/project-management/project/create").hasAuthority("ADMIN")
                 .requestMatchers("/project-management/project/add/task").hasAuthority("ADMIN")
                 .requestMatchers("/user-management/user/all").hasAuthority("ADMIN")

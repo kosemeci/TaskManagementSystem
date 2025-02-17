@@ -62,5 +62,5 @@ public class UserControllerImpl extends BaseController implements IUserControlle
     public RootEntity<DtoUser> chooseTask(@RequestParam Integer userId,@RequestParam Integer taskId) {
         return RootEntity.ok(userService.chooseTask(userId,taskId));
     }
-       
+           
 }

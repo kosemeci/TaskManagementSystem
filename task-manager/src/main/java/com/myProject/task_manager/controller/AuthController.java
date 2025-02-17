@@ -77,7 +77,7 @@ public class AuthController {
         user.setPassword(encodedPassword);
         userRepository.save(user);
         mailService.sendToMail(user.getMailAdress(), "HOSGELDİN DUYURUSU", "Sinyor LTD.ŞTİ ' ye hoş geldin! ");
-        return ResponseEntity.ok("User saved successfully :)");
+        return ResponseEntity.ok("User saved successfully.");
     }
 
     @PostMapping("/login")

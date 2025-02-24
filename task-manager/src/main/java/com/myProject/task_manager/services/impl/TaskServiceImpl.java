@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -111,9 +110,10 @@ public class TaskServiceImpl implements ITaskService{
             ()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
         Task task = taskRepository.findById(taskId).orElseThrow(
             ()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,taskId.toString())));
-        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        String ownerTask = task.getUser().getMailAdress();
+        // String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
         DtoTask dtoTask = new DtoTask();
-        if(task.getCompletionDate()==null && user.getMailAdress().equals(currentUser)){
+        if(task.getCompletionDate()==null && user.getMailAdress().equals(ownerTask)){
             task.setStatus(Status.COMPLETED);
             task.setCompletionDate(LocalDate.now());
             taskRepository.save(task);

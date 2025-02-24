@@ -66,6 +66,6 @@ public class TaskControllerImpl extends BaseController implements ITaskControlle
         Integer userId = taskService.getUserIdByEmail(email); 
 
         return RootEntity.ok(taskService.completeTask(userId, taskId));
-}
+    }
    
 }

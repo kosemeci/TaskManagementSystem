@@ -17,6 +17,6 @@ public interface IUserController {
 
      public RootEntity<DtoUser> changeRole(Integer id,String role);
 
-     public RootEntity<DtoUser> chooseTask(Integer userId,Integer taskId);
+     public RootEntity<DtoUser> chooseTask(Integer taskId);
 
 }

@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import com.myProject.task_manager.exception.MessageType;
 import com.myProject.task_manager.mail.MailService;
 import com.myProject.task_manager.repository.TaskRepository;
 import com.myProject.task_manager.repository.UserRepository;
+import com.myProject.task_manager.services.ITaskService;
 import com.myProject.task_manager.services.IUserService;
 
 @Service
@@ -36,6 +38,9 @@ public class UserServiceImpl implements IUserService{
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private ITaskService taskService;
     
     @Override
     public DtoUser saveUser(DtoUserIU dtoUserIU) {
@@ -135,16 +140,19 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public DtoUser chooseTask(Integer userId, Integer taskId) {
+    public DtoUser chooseTask(Integer taskId) {
         //taski user a atama işlemini ya user kendi yapacak ya admin atayacak.
-        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserMail = authentication.getName();
+        // Kullanıcıyı veritabanından çek (eğer ID lazımsa)
+        Integer userId = taskService.getUserIdByEmail(currentUserMail); 
         User user = userRepository.findById(userId)
                         .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
         Task task = taskRepository.findById(taskId)
                         .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD,userId.toString())));
-        User dbCurrentUser = userRepository.findByMailAdress(currentUser)
+        User dbCurrentUser = userRepository.findByMailAdress(currentUserMail)
                         .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
-        if((currentUser != null && user.getMailAdress().equals(currentUser))||dbCurrentUser.getRole()==Role.ADMIN){
+        if((currentUserMail != null && user.getMailAdress().equals(currentUserMail))||dbCurrentUser.getRole()==Role.ADMIN){
             DtoUser dtoUser = new DtoUser();
             if(task.getUser() == null){// yani task bir kullanıcıya atanmamışsa
                 task.setUser(user);
@@ -170,7 +178,7 @@ public class UserServiceImpl implements IUserService{
                 dtoUser.setTask(dtoTaskList);
             }
             // String text = "Yeni taskiniz '" + task.getTaskTitle() +"' başarıyla atanmıştır. Kolay gelsin :)";
-            // mailService.sendToMail(currentUser, "NEW CHOOSING TASK", text);
+            // mailService.sendToMail(currentUserMail, "NEW CHOOSING TASK", text);
             return dtoUser;   
         }
         else{

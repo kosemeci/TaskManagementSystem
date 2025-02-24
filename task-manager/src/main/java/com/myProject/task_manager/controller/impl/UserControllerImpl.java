@@ -59,8 +59,9 @@ public class UserControllerImpl extends BaseController implements IUserControlle
 
     @PutMapping("/choose/task")
     @Override
-    public RootEntity<DtoUser> chooseTask(@RequestParam Integer userId,@RequestParam Integer taskId) {
-        return RootEntity.ok(userService.chooseTask(userId,taskId));
+    public RootEntity<DtoUser> chooseTask(@RequestParam Integer taskId) {
+
+        return RootEntity.ok(userService.chooseTask(taskId));
     }
            
 }

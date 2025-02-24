@@ -15,6 +15,6 @@ public interface IUserService {
 
     public DtoUser changeRole(Integer id,String role);
 
-    public DtoUser chooseTask(Integer userId,Integer taskId);
+    public DtoUser chooseTask(Integer taskId);
 
 }

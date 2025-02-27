@@ -1,5 +1,7 @@
 package com.myProject.task_manager.controller.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +45,13 @@ public class ProjectControllerImpl extends BaseController implements IProjectCon
     @Override
     public RootEntity<DtoProject> createProject(@RequestBody DtoProject project) {
         return ok(projectService.createProject(project));
+    }
+
+    @GetMapping()
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Override
+    public List<DtoProject> getAllProject() {
+        return (projectService.getAllProject());
     }   
 
 }

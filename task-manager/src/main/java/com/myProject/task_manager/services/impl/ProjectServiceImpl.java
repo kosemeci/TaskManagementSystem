@@ -141,6 +141,34 @@ public class ProjectServiceImpl implements IProjectService{
         dtoProject.setCreatedTime(dbProject.getCreatedDate());
         dtoProject.setCompletionPercentage(dbProject.getCompletionPercentage());
         return dtoProject; 
+    }
+
+    @Override
+    public List<DtoProject> getAllProject() {
+        List<Project> projectList = projectRepository.findAll();
+        List<DtoProject> dtoProjectList = new ArrayList<>();
+        for(Project project : projectList){
+            List<DtoTask> dtoTaskList = new ArrayList<>();
+            DtoProject dtoProject = new DtoProject();
+            BeanUtils.copyProperties(project, dtoProject);
+            for (Task task : project.getTask()) {
+                DtoTask dtoTask = new DtoTask();
+                dtoTask.setId(task.getId());//gerek var mı düşün
+                dtoTask.setTaskTitle(task.getTaskTitle());
+                dtoTask.setStatus(task.getStatus());
+                if(task.getUser()!=null){
+                    DtoUser dtoUser = new DtoUser();
+                    dtoUser.setFirstName(task.getUser().getFirstName());
+                    dtoUser.setLastName(task.getUser().getLastName());
+                    dtoUser.setMailAdress(task.getUser().getMailAdress());
+                    dtoTask.setUser(dtoUser);
+                }
+                dtoTaskList.add(dtoTask);
+            }
+            dtoProject.setTask(dtoTaskList);
+            dtoProjectList.add(dtoProject);
+        }
+        return dtoProjectList;
     } 
 
 }

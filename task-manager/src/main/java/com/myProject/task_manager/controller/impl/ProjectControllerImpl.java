@@ -1,6 +1,7 @@
 package com.myProject.task_manager.controller.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,6 +53,13 @@ public class ProjectControllerImpl extends BaseController implements IProjectCon
     @Override
     public List<DtoProject> getAllProject() {
         return (projectService.getAllProject());
+    }
+
+    @GetMapping("/{projectId}/statistics")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Override
+    public RootEntity<Map<String, Integer>> getProjectStatistics(@PathVariable Integer projectId) {
+        return ok(projectService.getProjectStatistics(projectId));
     }   
 
 }

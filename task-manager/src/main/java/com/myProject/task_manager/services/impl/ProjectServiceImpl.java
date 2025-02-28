@@ -1,7 +1,9 @@
 package com.myProject.task_manager.services.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
@@ -169,6 +171,21 @@ public class ProjectServiceImpl implements IProjectService{
             dtoProjectList.add(dtoProject);
         }
         return dtoProjectList;
+    }
+
+    @Override
+    public Map<String, Integer> getProjectStatistics(Integer id) {
+        
+        Map<String,Integer> stats = new HashMap<>();
+        stats.put("totalTask", projectRepository.countTotalTask(id));
+        stats.put("completedTask",projectRepository.countTaskCompleted(id));
+        stats.put("cancelledTask",projectRepository.countTaskCancelled(id));
+        stats.put("failedTask",projectRepository.countTaskFailed(id));
+        stats.put("pendingTask",projectRepository.countTaskPending(id));
+        stats.put("progressTask",projectRepository.countTaskInProgress(id));
+        stats.put("totalUser",projectRepository.countUniqueUsers(id));
+        
+        return stats;
     } 
 
 }

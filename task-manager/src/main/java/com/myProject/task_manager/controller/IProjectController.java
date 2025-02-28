@@ -1,6 +1,7 @@
 package com.myProject.task_manager.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import com.myProject.task_manager.dto.AddTasksToProject;
 import com.myProject.task_manager.dto.DtoProject;
@@ -15,4 +16,8 @@ public interface IProjectController {
     public RootEntity<DtoProject> createProject(DtoProject project); 
 
     public List<DtoProject> getAllProject();
+
+    public RootEntity<Map<String,Integer>> getProjectStatistics(Integer id);
+
+
 }

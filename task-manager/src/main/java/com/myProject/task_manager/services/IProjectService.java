@@ -18,4 +18,6 @@ public interface IProjectService {
 
     public Map<String,Integer> getProjectStatistics(Integer id);
 
+    public Map<String,Integer> getProjectGeneralStatistics();
+
 }

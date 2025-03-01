@@ -184,7 +184,17 @@ public class ProjectServiceImpl implements IProjectService{
         stats.put("pendingTask",projectRepository.countTaskPending(id));
         stats.put("progressTask",projectRepository.countTaskInProgress(id));
         stats.put("totalUser",projectRepository.countUniqueUsers(id));
+        return stats;
+    }
+
+    @Override
+    public Map<String, Integer> getProjectGeneralStatistics() {
         
+        Map<String,Integer> stats = new HashMap<>();
+        stats.put("totalTask",projectRepository.countAllTask());
+        stats.put("totalUser", projectRepository.countTotalUser());
+        stats.put("totalAdmin", projectRepository.countTotalAdmin());
+        stats.put("totalProject",projectRepository.countTotalProject());
         return stats;
     } 
 

@@ -60,6 +60,13 @@ public class ProjectControllerImpl extends BaseController implements IProjectCon
     @Override
     public RootEntity<Map<String, Integer>> getProjectStatistics(@PathVariable Integer projectId) {
         return ok(projectService.getProjectStatistics(projectId));
+    }
+
+    @Override
+    @GetMapping("/general/statistics")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public RootEntity<Map<String, Integer>> getProjectGeneralStatistics() {
+        return ok(projectService.getProjectGeneralStatistics());
     }   
 
 }

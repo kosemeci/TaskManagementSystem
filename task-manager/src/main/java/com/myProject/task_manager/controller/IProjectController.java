@@ -19,5 +19,5 @@ public interface IProjectController {
 
     public RootEntity<Map<String,Integer>> getProjectStatistics(Integer id);
 
-
+    public RootEntity<Map<String,Integer>> getProjectGeneralStatistics();
 }

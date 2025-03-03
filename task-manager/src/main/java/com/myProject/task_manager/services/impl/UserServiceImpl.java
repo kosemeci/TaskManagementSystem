@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.myProject.task_manager.dto.DtoTask;
 import com.myProject.task_manager.dto.DtoUser;
@@ -186,4 +188,32 @@ public class UserServiceImpl implements IUserService{
         }
     }
 
+    @Transactional
+    public List<DtoUser> updateUsers(List<DtoUser> dtoUserList) {
+    return dtoUserList.stream()
+        .map(dtoUser -> {
+            User user = userRepository.findById(dtoUser.getId())
+                .orElseThrow(() -> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD, dtoUser.getId().toString())));
+
+            // Güncellemeler
+            if (dtoUser.getFirstName() != null) user.setFirstName(dtoUser.getFirstName());
+            if (dtoUser.getLastName() != null) user.setLastName(dtoUser.getLastName());
+            if (dtoUser.getRole() != null) user.setRole(dtoUser.getRole());
+            if (dtoUser.getPosition() != null) user.setPosition(dtoUser.getPosition());
+            if(dtoUser.getMailAdress() != null) user.setMailAdress(dtoUser.getMailAdress());
+
+            return userRepository.save(user);
+        })
+        .map(user -> {
+            DtoUser dtoUser = new DtoUser();
+            dtoUser.setId(user.getId());
+            dtoUser.setFirstName(user.getFirstName());
+            dtoUser.setLastName(user.getLastName());
+            dtoUser.setRole(user.getRole());
+            dtoUser.setPosition(user.getPosition());
+            dtoUser.setMailAdress(user.getMailAdress());
+            return dtoUser;
+        })
+        .collect(Collectors.toList());
+    }
 }

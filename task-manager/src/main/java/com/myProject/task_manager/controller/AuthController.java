@@ -26,7 +26,7 @@ import com.myProject.task_manager.dto.DtoUserIU;
 import com.myProject.task_manager.dto.DtoUserResponse;
 import com.myProject.task_manager.dto.LoginRequest;
 import com.myProject.task_manager.entity.User;
-import com.myProject.task_manager.mail.MailService;
+// import com.myProject.task_manager.mail.MailService;
 import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.security.JwtUtil;
 import com.myProject.task_manager.services.CustomUserDetailsService;
@@ -45,8 +45,8 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    @Autowired
-    private MailService mailService;
+    // @Autowired
+    // private MailService mailService;
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -76,7 +76,7 @@ public class AuthController {
         user.setTelNumber(dtoUserIU.getTelNumber());
         user.setPassword(encodedPassword);
         userRepository.save(user);
-        mailService.sendToMail(user.getMailAdress(), "HOSGELDİN DUYURUSU", "Sinyor LTD.ŞTİ ' ye hoş geldin! ");
+        // mailService.sendToMail(user.getMailAdress(), "HOSGELDİN DUYURUSU", "Sinyor LTD.ŞTİ ' ye hoş geldin! ");
         return ResponseEntity.ok("User saved successfully.");
     }
 

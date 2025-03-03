@@ -17,4 +17,6 @@ public interface IUserService {
 
     public DtoUser chooseTask(Integer taskId);
 
+    public List<DtoUser> updateUsers (List<DtoUser> dtoUser);
+
 }

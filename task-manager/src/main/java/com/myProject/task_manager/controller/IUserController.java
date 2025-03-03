@@ -19,4 +19,6 @@ public interface IUserController {
 
      public RootEntity<DtoUser> chooseTask(Integer taskId);
 
+     public RootEntity<List<DtoUser>> updateUsers(List<DtoUser> dtoUser);
+
 }

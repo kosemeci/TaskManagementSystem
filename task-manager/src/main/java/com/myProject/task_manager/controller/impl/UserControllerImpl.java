@@ -63,5 +63,12 @@ public class UserControllerImpl extends BaseController implements IUserControlle
 
         return RootEntity.ok(userService.chooseTask(taskId));
     }
+    
+    @PutMapping("/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Override
+    public RootEntity<List<DtoUser>> updateUsers(@RequestBody List<DtoUser> dtoUser ) {
+        return RootEntity.ok(userService.updateUsers(dtoUser));
+    }
            
 }

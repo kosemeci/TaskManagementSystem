@@ -200,7 +200,8 @@ public class UserServiceImpl implements IUserService{
             if (dtoUser.getLastName() != null) user.setLastName(dtoUser.getLastName());
             if (dtoUser.getRole() != null) user.setRole(dtoUser.getRole());
             if (dtoUser.getPosition() != null) user.setPosition(dtoUser.getPosition());
-            if(dtoUser.getMailAdress() != null) user.setMailAdress(dtoUser.getMailAdress());
+            if (dtoUser.getMailAdress() != null) user.setMailAdress(dtoUser.getMailAdress());
+            if (dtoUser.getTelNumber()!=null) user.setTelNumber(dtoUser.getTelNumber());
 
             return userRepository.save(user);
         })

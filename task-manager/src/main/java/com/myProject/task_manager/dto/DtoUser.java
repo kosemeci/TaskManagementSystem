@@ -21,6 +21,7 @@ public class DtoUser {
     private String firstName;
     private String lastName;
     private String mailAdress;
+    private String telNumber;
     private String position;
     private Role role;
     private List<DtoTask> task;

@@ -27,4 +27,5 @@ public class DtoTaskIU {
     
     private Status status=Status.PENDING;
     private LocalDate deadline ;
+    private Integer projectId;
 }

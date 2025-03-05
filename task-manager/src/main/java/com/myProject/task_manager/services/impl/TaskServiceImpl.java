@@ -22,6 +22,7 @@ import com.myProject.task_manager.exception.BaseException;
 import com.myProject.task_manager.exception.ErrorMessage;
 import com.myProject.task_manager.exception.MessageType;
 import com.myProject.task_manager.metrics.CalculateCompletionPercentage;
+import com.myProject.task_manager.repository.ProjectRepository;
 import com.myProject.task_manager.repository.TaskRepository;
 import com.myProject.task_manager.repository.UserRepository;
 import com.myProject.task_manager.services.ITaskService;
@@ -36,14 +37,26 @@ public class TaskServiceImpl implements ITaskService{
     UserRepository userRepository;
 
     @Autowired
+    ProjectRepository projectRepository;
+
+    @Autowired
     CalculateCompletionPercentage calculate;
 
     @Override
     public DtoTask createTask(DtoTaskIU dtoTaskIU) {
         DtoTask dtoTask = new DtoTask();
+        DtoProject dtoProject = new DtoProject();
         Task task = new Task();
         BeanUtils.copyProperties(dtoTaskIU, task);
+
+        Project dbProject = projectRepository.findById(dtoTaskIU.getProjectId())
+            .orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_PROJECT_RECORD,dtoTaskIU.getProjectId().toString())));
+        task.setProject(dbProject);
+        
         Task dbTask = taskRepository.save(task);
+        dtoProject.setId(dbProject.getId());
+        dtoProject.setProjectName(dbProject.getProjectName());
+        dtoTask.setProject(dtoProject);
         BeanUtils.copyProperties(dbTask, dtoTask);
         return dtoTask;
     }

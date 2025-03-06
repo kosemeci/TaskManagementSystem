@@ -19,7 +19,7 @@ public class DtoProject {
     private Integer id;
     private String projectName;
     private String description;
-    private LocalDate createdTime;
+    private LocalDate createdDate;
     private Double completionPercentage;
     private List<DtoTask> task;
     

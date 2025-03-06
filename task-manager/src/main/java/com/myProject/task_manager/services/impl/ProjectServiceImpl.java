@@ -140,7 +140,7 @@ public class ProjectServiceImpl implements IProjectService{
         BeanUtils.copyProperties(dtoProject, newProject);
         newProject.setCompletionPercentage(0.00);
         Project dbProject = projectRepository.save(newProject);
-        dtoProject.setCreatedTime(dbProject.getCreatedDate());
+        dtoProject.setCreatedDate(dbProject.getCreatedDate());
         dtoProject.setCompletionPercentage(dbProject.getCompletionPercentage());
         return dtoProject; 
     }

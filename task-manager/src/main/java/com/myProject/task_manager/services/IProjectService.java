@@ -20,4 +20,6 @@ public interface IProjectService {
 
     public Map<String,Integer> getProjectGeneralStatistics();
 
+    public DtoProject updateProject(DtoProject dtoProject);
+
 }

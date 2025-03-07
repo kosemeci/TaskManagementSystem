@@ -196,6 +196,21 @@ public class ProjectServiceImpl implements IProjectService{
         stats.put("totalAdmin", projectRepository.countTotalAdmin());
         stats.put("totalProject",projectRepository.countTotalProject());
         return stats;
+    }
+
+    @Override
+    public DtoProject updateProject(DtoProject dtoProject) {
+        Integer projectId = dtoProject.getId();
+        Project dbProject = projectRepository.findById(projectId).orElseThrow(()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_PROJECT_RECORD,projectId.toString())));
+        
+        dbProject.setDescription(dtoProject.getDescription());
+        dbProject.setProjectName(dtoProject.getProjectName());
+        projectRepository.save(dbProject);
+
+        DtoProject responseProject = new DtoProject();
+        BeanUtils.copyProperties(dbProject, responseProject);
+        
+        return responseProject;
     } 
 
 }

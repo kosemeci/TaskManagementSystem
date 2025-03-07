@@ -72,6 +72,7 @@ public class ProjectControllerImpl extends BaseController implements IProjectCon
 
     @Override
     @PutMapping("/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public RootEntity<DtoProject> updateProject(@RequestBody DtoProject dtoProject) {
         return RootEntity.ok(projectService.updateProject(dtoProject));
     }   

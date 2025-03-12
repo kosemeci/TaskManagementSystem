@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,6 +67,13 @@ public class TaskControllerImpl extends BaseController implements ITaskControlle
         Integer userId = taskService.getUserIdByEmail(email); 
 
         return RootEntity.ok(taskService.completeTask(userId, taskId));
+    }
+
+    @DeleteMapping("/delete/{taskId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Override
+    public String deleteTask(@PathVariable Integer taskId){
+        return taskService.deleteTask(taskId);
     }
    
 }

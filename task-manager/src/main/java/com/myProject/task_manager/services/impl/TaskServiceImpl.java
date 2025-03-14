@@ -164,4 +164,18 @@ public class TaskServiceImpl implements ITaskService{
         taskRepository.delete(task);
         return "The Task has been deleted successfully.";
     }
+
+    @Override
+    public String cancelTask(Integer taskId) {
+        Task task = taskRepository.findById(taskId)
+        .orElseThrow(() -> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD, taskId.toString())));
+
+        if (task.getStatus() == Status.CANCELLED) {
+            throw new BaseException(new ErrorMessage(MessageType.ALREADY_CANCELLED, taskId.toString()));
+        }
+        
+        task.setStatus(Status.CANCELLED);
+        taskRepository.save(task);
+        return "The Task has been cancelled successfully.";
+    }
 }

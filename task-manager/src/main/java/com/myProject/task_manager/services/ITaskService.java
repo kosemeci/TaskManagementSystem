@@ -18,5 +18,8 @@ public interface ITaskService {
     public Integer getUserIdByEmail(String email);
 
     public String deleteTask(Integer taskId);
+
+    public String cancelTask(Integer taskId);
+
     
 }

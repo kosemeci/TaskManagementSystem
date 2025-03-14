@@ -17,5 +17,7 @@ public interface ITaskController {
     public RootEntity<DtoTask> completeTask(Integer taskId);
 
     public String deleteTask(Integer taskId);
+
+    public String cancelTask(Integer taskId);
     
 }

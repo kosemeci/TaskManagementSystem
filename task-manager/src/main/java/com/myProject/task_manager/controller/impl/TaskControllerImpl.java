@@ -75,5 +75,12 @@ public class TaskControllerImpl extends BaseController implements ITaskControlle
     public String deleteTask(@PathVariable Integer taskId){
         return taskService.deleteTask(taskId);
     }
+
+    @DeleteMapping("/cancel/{taskId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Override
+    public String cancelTask(@PathVariable Integer taskId) {
+        return taskService.cancelTask(taskId);
+    }
    
 }

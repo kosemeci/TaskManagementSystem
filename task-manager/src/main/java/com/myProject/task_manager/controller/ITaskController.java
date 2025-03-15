@@ -19,5 +19,7 @@ public interface ITaskController {
     public String deleteTask(Integer taskId);
 
     public String cancelTask(Integer taskId);
-    
+
+    public String updateDeadlineTask(Integer taskId, String date);
+   
 }

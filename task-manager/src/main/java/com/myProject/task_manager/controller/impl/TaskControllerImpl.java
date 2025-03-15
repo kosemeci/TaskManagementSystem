@@ -82,5 +82,12 @@ public class TaskControllerImpl extends BaseController implements ITaskControlle
     public String cancelTask(@PathVariable Integer taskId) {
         return taskService.cancelTask(taskId);
     }
+
+    @PutMapping("/update/deadline")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Override
+    public String updateDeadlineTask(@RequestParam Integer taskId , @RequestParam String newDate) {
+        return taskService.updateDeadlineTask(taskId,newDate);
+    }
    
 }

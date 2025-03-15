@@ -178,4 +178,14 @@ public class TaskServiceImpl implements ITaskService{
         taskRepository.save(task);
         return "The Task has been cancelled successfully.";
     }
+
+    @Override
+    public String updateDeadlineTask(Integer taskId,String date) {
+        Task task = taskRepository.findById(taskId)
+        .orElseThrow(() -> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD, taskId.toString())));
+
+        task.setDeadline(LocalDate.parse(date));
+        taskRepository.save(task);
+        return "The Task deadline has been updated successfully.";
+    }
 }

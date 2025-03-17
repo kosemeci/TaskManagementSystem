@@ -188,4 +188,18 @@ public class TaskServiceImpl implements ITaskService{
         taskRepository.save(task);
         return "The Task deadline has been updated successfully.";
     }
+
+    @Override
+    public String assignUserTask(Integer taskId, Integer userId) {
+        Task task = taskRepository.findById(taskId)
+        .orElseThrow(() -> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_TASK_RECORD, taskId.toString())));
+
+        User user = userRepository.findById(userId).orElseThrow(
+            ()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
+
+        task.setUser(user);
+        taskRepository.save(task);
+
+        return "The Task assigned the user successfully.";
+    }
 }

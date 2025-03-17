@@ -23,5 +23,5 @@ public interface ITaskService {
 
     public String updateDeadlineTask(Integer taskId,String date);
 
-    
+    public String assignUserTask(Integer taskId,Integer userId);
 }

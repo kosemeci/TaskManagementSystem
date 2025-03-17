@@ -76,10 +76,10 @@ public class TaskControllerImpl extends BaseController implements ITaskControlle
         return taskService.deleteTask(taskId);
     }
 
-    @PutMapping("/cancel/{taskId}")
+    @PutMapping("/cancel")
     @PreAuthorize("hasAuthority('ADMIN')")
     @Override
-    public String cancelTask(@PathVariable Integer taskId) {
+    public String cancelTask(@RequestParam Integer taskId) {
         return taskService.cancelTask(taskId);
     }
 
@@ -88,6 +88,13 @@ public class TaskControllerImpl extends BaseController implements ITaskControlle
     @Override
     public String updateDeadlineTask(@RequestParam Integer taskId , @RequestParam String newDate) {
         return taskService.updateDeadlineTask(taskId,newDate);
+    }
+
+    @PutMapping("/assign")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Override
+    public String assignUserTask(@RequestParam Integer taskId, @RequestParam Integer userId) {
+        return taskService.assignUserTask(taskId,userId);
     }
    
 }

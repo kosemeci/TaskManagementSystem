@@ -21,5 +21,7 @@ public interface ITaskController {
     public String cancelTask(Integer taskId);
 
     public String updateDeadlineTask(Integer taskId, String date);
+
+    public String assignUserTask(Integer taskId,Integer userId);
    
 }

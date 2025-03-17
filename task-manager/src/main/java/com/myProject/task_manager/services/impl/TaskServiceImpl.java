@@ -198,6 +198,8 @@ public class TaskServiceImpl implements ITaskService{
             ()-> new BaseException(new ErrorMessage(MessageType.NOT_EXIST_USER_RECORD,userId.toString())));
 
         task.setUser(user);
+        task.setStatus(Status.IN_PROGRESS);
+        task.setAssignedDate(LocalDate.now());
         taskRepository.save(task);
 
         return "The Task assigned the user successfully.";

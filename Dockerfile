@@ -5,7 +5,7 @@ FROM openjdk:23-jdk
 WORKDIR /app
 
 #Projeyi build ettiğin JAR dosyasını kopyala
-COPY target/task-manager-0.0.1-SNAPSHOT.jar app.jar
+COPY ./task-manager/target/task-manager-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 

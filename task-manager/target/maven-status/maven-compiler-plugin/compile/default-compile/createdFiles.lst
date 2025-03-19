@@ -11,6 +11,7 @@ com\myProject\task_manager\dto\LoginRequest.class
 com\myProject\task_manager\controller\impl\UserControllerImpl.class
 com\myProject\task_manager\metrics\CalculateCompletionPercentage.class
 com\myProject\task_manager\controller\IUserController.class
+com\myProject\task_manager\dto\DtoUserResponse.class
 com\myProject\task_manager\repository\ProjectRepository.class
 com\myProject\task_manager\services\impl\ProjectServiceImpl.class
 com\myProject\task_manager\services\impl\UserServiceImpl.class
@@ -27,7 +28,9 @@ com\myProject\task_manager\security\SecurityConfig.class
 com\myProject\task_manager\entity\Status.class
 com\myProject\task_manager\security\JwtAuthenticationFilter.class
 com\myProject\task_manager\services\ITaskService.class
+com\myProject\task_manager\config\CorsConfig$1.class
 com\myProject\task_manager\controller\ITaskController.class
+com\myProject\task_manager\config\CorsConfig.class
 com\myProject\task_manager\controller\impl\ProjectControllerImpl.class
 com\myProject\task_manager\controller\IProjectController.class
 com\myProject\task_manager\exception\BaseException.class
